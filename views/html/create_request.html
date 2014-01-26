@@ -1,0 +1,76 @@
+{>"{cd}/main.html"/}
+{<content}
+  result : {result}
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <form id="reg_form" method="post"  enctype="multipart/form-data" action="{#url}site.create_request{/url}" role="form" class="form-horizontal">
+      <div class="form-group">
+        <label for="num">Номер извещения на офф. сайте</label>
+        <input name="num" type="text" class="form-control" id="num" placeholder="Номер" value="{req.num}">
+      </div>
+      <div class="form-group">
+        <label for="sum">Сумма займа</label>
+        <input name="sum" type="text" class="form-control" id="sum" placeholder="Сумма" value="{req.sum}">
+      </div>
+      <div class="form-group">
+        <label for="period">На какой срок</label>
+        <input name="period" type="text" class="form-control" id="period" placeholder="срок" value="{req.period}">
+      </div>
+      <div class="form-group">
+        <label for="de">Крайний срок перечисления денег</label>
+        <input name="date_end" type="date" class="form-control" id="de" placeholder="" value="{req.date_end}">
+      </div>
+      <div class="form-group">
+        <label for="name">Название площадки</label>
+        <input name="name" type="text" class="form-control" id="name" placeholder="Название" value="{req.name}">
+      </div>
+      <div class="form-group">
+        <label for="name">Файлы</label>
+        <input name="files" type="file" class="form-control" id="files" multiple placeholder="Файлы">
+      </div>
+      <input type="hidden" name="id" value="{req.id}">
+      <button type="игеещт" class="btn btn-default">Отправить заявку</button>
+    </form>
+  </div>
+  <div class="col-md-3"></div>
+</div>
+
+
+
+<!--
+  {?user.guest}
+
+  <strong><a href="#" onclick="$('#login').focus();">Login</a></strong> or
+  <strong><a href="#" onclick="$('#reg_login').focus();">register</a></strong>
+  to create a topic
+
+  {:else}
+  <form id="topic" action="{#url}topic.create{/url}" method="post">
+    <div class="control-group">
+      <input placeholder="Type the name" type="text" name="topic[name]"/>
+    </div>
+    <div class="control-group">
+      <textarea placeholder="Type the description" name="topic[description]"></textarea>
+    </div>
+    <input type="submit" value="Publish!">
+  </form>
+  {/user.guest}
+-->
+  <script type="text/javascript">
+    $(function(){
+      var options = {
+        rules : {
+          'topic[name]' : {
+            required      : true,
+            maxlength     : 256 },
+
+          'topic[description]' : {
+            required      : true,
+            maxlength     : 4096 }
+      } }
+
+      $('#topic').validate( options );
+    });
+  </script>
+{/content}

@@ -20,13 +20,12 @@ User.prototype.login = function ( response, request ) {
   var listener = response.create_listener();
   var user     = request.params.user;
 
-  // если нет необходимых параметров, то не стоит даже пытаться авторизовать пользователя
-  if ( !user || !user.login || !user.pass )
+  if ( !user || !user.email || !user.pass )
     return response.send( new Error('Bad params'), 500 );
 
   // ищем пользователя по логину и паролю
   listener.stack <<= this.models.user.find_by_attributes({
-    login : user.login,
+    email : user.email,
     pass  : user.pass.md5()
   });
 
@@ -37,9 +36,10 @@ User.prototype.login = function ( response, request ) {
       // производить по ним авторизацию (см. контроллер Site.connect_client)
       self.app.users.login( user, request, 356 );
 
-      // а также отправляем результат со ссылкой на главную страницу
-      response.view_name('main').send({ result : self.create_url('site.index') });
-    }
+      response.view_name('main').send({
+        errors : null,
+        result : self.create_url('site.cabinet')
+      })    }
 
     // иначе отправляем представление json/user.json с ошибками которые будут показаны в форме
     else response.view_name('user').send({
@@ -71,27 +71,27 @@ User.prototype.register = function ( response, request ) {
   var self      = this;
   var listener  = response.create_listener();
   var params    = request.params.user;
-
   // если нет необходимых параметров, то не стоит даже пытаться регистрировать
-  if ( !params || !params.login || !params.pass )
+  if ( !params || !params.email || !params.pass )
     return response.send( new Error('Bad params'), 500 );
 
   // проверяем существует ли указанный логин
-  listener.stack <<= this.models.user.exists( 'login=:login', {
-    login : params.login
+  listener.stack <<= this.models.user.exists( 'email=:email', {
+    email : params.email
   });
 
   listener.success(function( user_exists ){
-    // задаем представление json/user.json через которое можно отправить ошибки, которые будут показаны в форме
-    response.view_name('user');
 
     // если логин уже занят - отправляем ошибку для показа в форме
-    if( user_exists ) return response.send({
-      errors : {
-        login : 'This login already in use'
-      }
-    });
-
+    if( user_exists ) {
+      self.views_folder = 'json';
+      self.views_ext = "json";
+      return response.view_name('user').send({
+        errors : {
+          login : 'This login already in use'
+        }
+      });
+    }
     // если нет - создаем модель пользователя
     var user = new self.models.user( params );
 
@@ -100,8 +100,6 @@ User.prototype.register = function ( response, request ) {
     listener.success( function(){
       // если сохранение прошло успешно - сразу же осуществляем вход пользователя через компонент users
       self.app.users.login( user, request, 365 );
-
-      // и отправляем информацию о том что надо перенаправить клиент на главную страницу
       return response.view_name('main').send({
         result : self.create_url('site.index')
       });

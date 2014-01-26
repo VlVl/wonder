@@ -55,16 +55,15 @@ module.exports = {
       // Site controller
       // главная
       ''                      : 'site.index',
-      'page/<page:\\d+>'      : 'site.index',
 
       // страница создания топика
-      'new_topic'             : 'site.create_topic',
+      'edit_profile'             : 'site.edit_profile',
 
-      // просмотр топика, примутся УРЛ вида /topic/2
-      'topic/<topic_id:\\d+>' : 'site.view_topic',
+      'del'                      : 'request.remove | post',
+      'request/<req_id:\\d+>'    : 'site.request',
+      'request_info'             : 'request.info | post',
 
-      // User controller
-      // регистрация пользователя
+      'newuser'               : 'site.register',
       'register'              : 'user.register        | post',
 
       // вход пользователя
@@ -73,13 +72,14 @@ module.exports = {
       // выход пользователя
       'logout'                : 'user.logout',
 
-      // Topic controller
-      // запрос на создание нового топика
-      'create_topic'          : 'topic.create         | post',
+      'cabinet'               : 'site.cabinet',
+      'admin'                 : 'site.admin',
 
-      // Comment controller
-      // запрос на добавления комментария
-      'comment'               : 'comment.create       | post'
+      'new_request'           : 'site.new_request',
+      'create_request'        : 'request.create_request | post',
+
+      'request'               : 'site.request',
+      'table/<t_id:\\d+>'     : 'site.table'
     }
   },
 
@@ -105,7 +105,7 @@ module.exports = {
     ext_dust : true,
 
     // Пользовательский компонент компилирующий less файлы в css
-    less     : false,
+//    less     : true,
 
     // компонент управляющий правами пользователей
     users    : {
@@ -139,6 +139,7 @@ module.exports = {
     http                : {
       // на 3000 порту
       port            : 3000,
+      upload_dir : 'files',
 
       // здесь указываются директории в которых ищутся файлы, например запрос /js/jquery.min.js вернет файл
       // static/js/jquery.min.js

@@ -30,16 +30,35 @@ User.prototype.get_table_name = function(){
  * @return {Object}
  */
 User.prototype.attributes = function(){
-  return {};/*
-   login : {
+  return {
+   email : {
    'safe required' : true,
-   range_length   : [4, 30],
    prefilters     : 'trim' },
 
    pass : {
    'safe required' : true,
-   postfilters    : 'md5' }
-   };*/
+   postfilters    : 'md5' },
+
+  name : {
+    'safe required' : true,
+    prefilters     : 'trim' },
+  surname : {
+    'safe required' : true,
+    prefilters     : 'trim' },
+  patronymic : {
+    'safe required' : true,
+    prefilters     : 'trim' },
+  tel : {
+    'safe required' : true,
+    prefilters     : 'trim' },
+  inn : {
+    'safe required' : true,
+    prefilters     : 'trim' },
+  ur : {
+    'safe required' : true,
+    prefilters     : 'trim' }
+
+  };
 }
 
 
@@ -50,4 +69,9 @@ User.prototype.attributes = function(){
  */
 User.prototype.cookie_hash = function(){
   return this.pass.md5();
+}
+User.prototype.relations = function () {
+  return {
+    'requests'    : this.has_many('request').by('user_id')
+  }
 }

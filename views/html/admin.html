@@ -1,0 +1,30 @@
+{>"{cd}/main.html"/}
+{<content}
+<h4>{user.surname} {user.name} {user.patronymic}</h4>
+<div id="alert_div" style="display: none" class="alert alert-success"></div>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>Пользователь</th>
+    <th>Заявки</th>
+  </tr>
+  </thead>
+  {#users}
+  <tr id="tr{id}">
+    <td style="width: 50%;">{surname} {name} {patronymic}</td>
+    <td>
+      <small onclick="$('#u{id}').toggle('slow')">Заявки</small>
+      <ul id="u{id}" class="list-unstyled" style="display: none">
+      {#requests}
+        <li><a href="{#url req_id=id}site.request{/url}">{name}</a></li>
+      {/requests}
+      </ul>
+    </td>
+    <td>
+      <a href="{#url req_id=id}site.request{/url}"><span id="edit{id}" class="glyphicon glyphicon-pencil"></span></a>
+      <a href="#"><span id="del{id}" class="glyphicon glyphicon-trash"></span></a>
+    </td>
+  </tr>
+  {/users}
+</table>
+{/content}
