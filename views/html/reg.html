@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-3"></div>
   <div class="col-md-6">
-    <form id="reg_form" method="post" action="{#url}user.register{/url}" role="form" class="form-horizontal">
+    <form id="reg_form" onsubmit="return false;" method="post" action="{#url}user.register{/url}" role="form" class="form-horizontal">
       <div class="form-group">
         <label for="name1">Имя</label>
         <input name="user[name]" type="text" class="form-control" id="name1" placeholder="Ввдите имя">
@@ -17,16 +17,8 @@
         <input name="user[patronymic]" type="text" class="form-control" id="name3" placeholder="Ввдите отчество">
       </div>
       <div class="form-group">
-        <label for="ur">Отчество</label>
-        <input name="user[ur]" type="text" class="form-control" id="ur" placeholder="Ввдите отчество">
-      </div>
-      <div class="form-group">
         <label for="tel">Телефон</label>
-        <input name="user[tel]" type="text" class="form-control" id="tel" placeholder="Ввдите отчество">
-      </div>
-      <div class="form-group">
-        <label for="inn">ИНН</label>
-        <input name="user[inn]" type="text" class="form-control" id="inn" placeholder="инн">
+        <input name="user[tel]" type="text" class="form-control" id="tel" placeholder="Ввдите телефон">
       </div>
       <div class="form-group">
         <label for="inputEmail1">Email</label>

@@ -33,7 +33,7 @@ Request.prototype.create_request = function( response, request ){
   delete request.params.request.files;
 
   var dbrequest  = new this.models.request( request.params.request );
-  dbrequest.user_id = request.user.model.id;
+//  dbrequest.company_id = request.user.model.id;
   dbrequest.date = new Date();
 
 //  for(var i in request.params)console.log(i + "   " + request.params[i]);

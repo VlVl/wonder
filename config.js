@@ -60,7 +60,7 @@ module.exports = {
       'edit_profile'             : 'site.edit_profile',
 
       'del'                      : 'request.remove | post',
-      'request/<req_id:\\d+>'    : 'site.request',
+      'request/<com_id:\\d+>/<req_id:\\d+>'    : 'site.request',
       'request_info'             : 'request.info | post',
 
       'newuser'               : 'site.register',
@@ -79,6 +79,7 @@ module.exports = {
       'create_request'        : 'request.create_request | post',
 
       'request'               : 'site.request',
+      'company'               : 'user.create_company',
       'table/<t_id:\\d+>'     : 'site.table'
     }
   },

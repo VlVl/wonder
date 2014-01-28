@@ -1,13 +1,13 @@
-module.exports = Request.inherits( global.autodafe.db.ActiveRecord );
+module.exports = Company.inherits( global.autodafe.db.ActiveRecord );
 
 /**
- * Модель для топиков
+ * Модель для пользователей
  *
  * @param {Object} params
  * @extends ActiveRecord
  * @constructor
  */
-function Request( params ) {
+function Company( params ) {
   this._init( params );
 }
 
@@ -17,8 +17,8 @@ function Request( params ) {
  *
  * @return {String}
  */
-Request.prototype.get_table_name = function(){
-  return 'request';
+Company.prototype.get_table_name = function(){
+  return 'tcompany';
 }
 
 
@@ -29,26 +29,24 @@ Request.prototype.get_table_name = function(){
  *
  * @return {Object}
  */
-Request.prototype.attributes = function(){
+Company.prototype.attributes = function(){
   return {
-    company_id : 'safe required',
-    reqamount : 'safe required',
-    duedate   : 'safe required',
-    sberorderid : 'safe'
+    userref : {
+      'safe required' : true,
+      prefilters     : 'trim' },
+
+    companyname : {
+      'safe required' : true,
+      postfilters    : 'trim' },
+    companyinn : {
+      'safe required' : true,
+      postfilters    : 'trim' }
   };
 }
 
-
-/**
- * В этом методе указываются отношения между этой и другими моделями. Это необходимо для правильной генерации
- * сложных запросов к базе данных.
- *
- * @return {Object}
- */
-Request.prototype.relations = function () {
+Company.prototype.relations = function () {
   return {
-    // топик пренадлежит пользователю
-    'company'   : this.belongs_to( 'company' ).by( 'company_id' ),
-    'files'    : this.has_many('file').by('req_id')
+    'user'    : this.belongs_to('user').by('userref'),
+    'request' : this.has_many('request').by('company_id')
   }
-};
+}

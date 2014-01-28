@@ -49,7 +49,8 @@ Site.prototype.connect_client = function ( client ){
 
 
 Site.prototype.index = function ( response, request ) {
-    response.send({user:response.user.model});
+//    response.send({user:response.user ? response.user.model : null});
+    response.send();
 };
 
 Site.prototype.edit_profile = function ( response, request ) {
@@ -58,8 +59,9 @@ Site.prototype.edit_profile = function ( response, request ) {
 
 Site.prototype.request = function ( response, request ) {
   var id = request.params.req_id;
+  var cid = request.params.com_id;
   if(id){
-    this.models.request.find_by_attributes({id : id, user_id:request.user.model.id}).on("success", function(req){
+    this.models.request.find_by_attributes({id : id}).on("success", function(req){
       response.view_name("create_request").send({
         req : req,
         user:response.user.model,
@@ -99,20 +101,20 @@ Site.prototype.table = function( response, request ){
 };
 Site.prototype.register = function( response, request ){
   response.view_name("reg").send({
-
+    script : "user_cabinet"
   })
 };
 Site.prototype.cabinet = function ( response, request ) {
 
   var listener  = response.create_listener();
-  listener.stack <<= this.models.request.With("files").find_all_by_attributes({
-    user_id : request.user.model.id
+  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
+    userref : request.user.model.id
   });
   listener.success(function(data){
     response.view_name("cabinet").send({
       script : ["user_cabinet"],
       user : request.user.model,
-      requests : data
+      companies : data
     })
   })
 };

@@ -7,30 +7,30 @@
     <form id="reg_form" method="post"  enctype="multipart/form-data" action="{#url}site.create_request{/url}" role="form" class="form-horizontal">
       <div class="form-group">
         <label for="num">Номер извещения на офф. сайте</label>
-        <input name="num" type="text" class="form-control" id="num" placeholder="Номер" value="{req.num}">
+        <input name="request[num]" type="text" class="form-control" id="num" placeholder="Номер" value="{req.num}">
       </div>
       <div class="form-group">
         <label for="sum">Сумма займа</label>
-        <input name="sum" type="text" class="form-control" id="sum" placeholder="Сумма" value="{req.sum}">
+        <input name="request[sum]" type="text" class="form-control" id="sum" placeholder="Сумма" value="{req.sum}">
       </div>
       <div class="form-group">
         <label for="period">На какой срок</label>
-        <input name="period" type="text" class="form-control" id="period" placeholder="срок" value="{req.period}">
+        <input name="request[period]" type="text" class="form-control" id="period" placeholder="срок" value="{req.period}">
       </div>
       <div class="form-group">
         <label for="de">Крайний срок перечисления денег</label>
-        <input name="date_end" type="date" class="form-control" id="de" placeholder="" value="{req.date_end}">
+        <input name="request[duedate]" type="date" class="form-control" id="de" placeholder="" value="{req.duedate}">
       </div>
       <div class="form-group">
         <label for="name">Название площадки</label>
-        <input name="name" type="text" class="form-control" id="name" placeholder="Название" value="{req.name}">
+        <input name="request[name]" type="text" class="form-control" id="name" placeholder="Название" value="{req.name}">
       </div>
       <div class="form-group">
         <label for="name">Файлы</label>
-        <input name="files" type="file" class="form-control" id="files" multiple placeholder="Файлы">
+        <input name="request[files[]]" type="file" class="form-control" id="files" multiple placeholder="Файлы">
       </div>
       <input type="hidden" name="id" value="{req.id}">
-      <button type="игеещт" class="btn btn-default">Отправить заявку</button>
+      <button type="submit" class="btn btn-default">Отправить заявку</button>
     </form>
   </div>
   <div class="col-md-3"></div>

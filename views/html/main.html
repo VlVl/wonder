@@ -36,7 +36,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
+        {?user}
         <li><a href="{#url t_id=1}create_request{/url}">Заявка</a></li>
+        {/user}
+        {?user.admin}
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Отчеты <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="{#url t_id=1}site.table{/url}">Уведомление о прекращении блокирования</a></li>
@@ -46,6 +49,7 @@
             <li><a href="{#url t_id=5}site.table{/url}">Уведомление о поступлении отложенной заявки на участие в аукционе</a></li>
           </ul>
         </li>
+        {/user.admin}
       </ul>
       <form id="logForm"  class="navbar-form navbar-right" role="login">
       <div class="form-group">

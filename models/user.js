@@ -52,10 +52,10 @@ User.prototype.attributes = function(){
     'safe required' : true,
     prefilters     : 'trim' },
   inn : {
-    'safe required' : true,
+    'safe' : true,
     prefilters     : 'trim' },
   ur : {
-    'safe required' : true,
+    'safe' : true,
     prefilters     : 'trim' }
 
   };
@@ -72,6 +72,7 @@ User.prototype.cookie_hash = function(){
 }
 User.prototype.relations = function () {
   return {
-    'requests'    : this.has_many('request').by('user_id')
+    'requests'    : this.has_many('request').by('user_id'),
+    'company'     : this.has_many('company').by('userref')
   }
 }

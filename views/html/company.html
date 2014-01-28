@@ -1,0 +1,36 @@
+
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <form id="com_form" method="post"  action="{#url}site.create_company{/url}" role="form" class="form-horizontal">
+      <div class="form-group">
+        <label for="name">Название площадки</label>
+        <input name="company[companyname]" type="text" class="form-control" id="name" placeholder="Название" value="{company.companyname}">
+      </div>
+      <div class="form-group">
+        <label for="inn">ИНН</label>
+        <input name="company[companyinn]" type="file" class="form-control" id="inn" multiple placeholder="ИНН">
+      </div>
+      <input type="hidden" name="id" value="{req.id}">
+      <button type="submit" class="btn btn-default">создать</button>
+    </form>
+  </div>
+  <div class="col-md-3"></div>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    var options = {
+      rules : {
+        'topic[name]' : {
+          required      : true,
+          maxlength     : 256 },
+
+        'topic[description]' : {
+          required      : true,
+          maxlength     : 4096 }
+      } }
+
+    $('#topic').validate( options );
+  });
+</script>
