@@ -105,7 +105,7 @@ Site.prototype.register = function( response, request ){
   })
 };
 Site.prototype.cabinet = function ( response, request ) {
-
+  if(!request.user.model) return request.redirect( this.create_url('site.index'));
   var listener  = response.create_listener();
   listener.stack <<= this.models.company.With("request").find_all_by_attributes({
     userref : request.user.model.id

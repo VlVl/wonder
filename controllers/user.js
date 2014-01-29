@@ -35,11 +35,13 @@ User.prototype.login = function ( response, request ) {
       // так как указан третий параметр, клиенту будут записаны специальные куки, чтобы впоследствии
       // производить по ним авторизацию (см. контроллер Site.connect_client)
       self.app.users.login( user, request, 356 );
+      request.redirect( self.create_url('site.cabinet'));
 
-      response.view_name('main').send({
-        errors : null,
-        result : self.create_url('site.cabinet')
-      })    }
+//      response.view_name('main').send({
+//        errors : null,
+//        result : self.create_url('site.cabinet')
+//      })
+    }
 
     // иначе отправляем представление json/user.json с ошибками которые будут показаны в форме
     else response.view_name('user').send({
@@ -101,9 +103,11 @@ User.prototype.register = function ( response, request ) {
     listener.success( function(){
       // если сохранение прошло успешно - сразу же осуществляем вход пользователя через компонент users
       self.app.users.login( user, request, 365 );
-      return response.view_name('user').send({
-        result : self.create_url('site.index')
-      });
+      request.redirect( this.create_url('site.cabinet'));
+
+//      return response.view_name('user').send({
+//        result : self.create_url('site.index')
+//      });
     }).error(function(err){
         return response.view_name('user').send({
           errors : err

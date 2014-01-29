@@ -36,10 +36,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        {?user}
-        <li><a href="{#url t_id=1}create_request{/url}">Заявка</a></li>
-        {/user}
-        {?user.admin}
+        {?user.model}
+        <li><a href="{#url t_id=1}site.create_request{/url}">Заявка</a></li>
+        {/user.model}
+        {?user.model.admin}
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Отчеты <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="{#url t_id=1}site.table{/url}">Уведомление о прекращении блокирования</a></li>
@@ -49,16 +49,16 @@
             <li><a href="{#url t_id=5}site.table{/url}">Уведомление о поступлении отложенной заявки на участие в аукционе</a></li>
           </ul>
         </li>
-        {/user.admin}
+        {/user.model.admin}
       </ul>
-      <form id="logForm"  class="navbar-form navbar-right" role="login">
+      <form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">
       <div class="form-group">
-      <input name="email" type="email" class="form-control" placeholder="email">
+      <input name="user[email]" type="email" class="form-control" placeholder="email">
       </div>
       <div class="form-group">
-      <input name="pass" type="password" class="form-control" placeholder="password">
+      <input name="user[pass]" type="password" class="form-control" placeholder="password">
       </div>
-      <button id="logBut" type="button" class="btn btn-default">Вход</button>
+      <button id="logBut" type="submit" class="btn btn-default">Вход</button>
       <button id="regBut" type="button" class="btn btn-default">Регистрация</button>
       </form>
     </div><!-- /.navbar-collapse -->
@@ -71,13 +71,6 @@
 <script src="/js/bootstrap.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
-    $("#logBut").click(function(){
-      $.post("/login",{user : {email : $('input[name=email]').val(), pass : $('input[name=pass]').val()}},function(resp){
-        resp = JSON.parse(resp)
-        if(!resp.error) window.location = resp.result;
-      });
-      return false;
-    })
     $("#regBut").click(function(){
       window.location = "/newuser";
       return false;
