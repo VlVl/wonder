@@ -1,0 +1,28 @@
+{>"{cd}/main.html"/}
+{<content}
+<h4>{user.model.surname} {user.model.name} {user.model.patronymic}</h4>
+<div id="alert_div" style="display: none" class="alert alert-success"></div>
+<h4>Заявки <a href="{#url cid=cid req_id=0}site.request{/url}"><small id="add_company">добавить</small></a></h4>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>reqamount</th>
+    <th>duedate</th>
+    <th>date</th>
+    <th>sberorderid</th>
+  </tr>
+  </thead>
+  {#requests}
+  <tr id="tr{id}">
+    <td>{reqamount}</td>
+    <td>{duedate}</td>
+    <td>{date}</td>
+    <td><input type="text" name="sberorderid" value="{sberorderid}"></td>
+    <td>
+      <a href="{#url c_id=id}site.company{/url}"><span id="edit{id}" class="glyphicon glyphicon-pencil"></span></a>
+      <a href="#"><span id="del{id}" class="glyphicon glyphicon-trash"></span></a>
+    </td>
+  </tr>
+  {/requests}
+</table>
+{/content}

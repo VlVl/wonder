@@ -141,10 +141,14 @@ Site.prototype.register = function( response, request ){
   })
 };
 Site.prototype.cabinet = function ( response, request ) {
-//  if(!request.user.model) return request.redirect( this.create_url('site.index'));
+  if(!request.user.model)
+    return request.redirect( this.create_url('site.index'));
+  var id = request.params.uid;
+  if(!id) id = request.user.model.id;
   var listener  = response.create_listener();
-  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
-    userref : request.user.model.id
+//  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
+  listener.stack <<= this.models.company.find_all_by_attributes({
+    userref : id
   });
   listener.success(function(data){
     response.view_name("cabinet").send({
@@ -157,13 +161,32 @@ Site.prototype.cabinet = function ( response, request ) {
           });
       })
 };
+Site.prototype.requests = function ( response, request ) {
+  if(!request.user.model)
+    return request.redirect( this.create_url('site.index'));
+  var listener  = response.create_listener();
+//  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
+  listener.stack <<= this.models.request.With("files").find_all_by_attributes({
+    company_id : request.params.cid
+  });
+  listener.success(function(data){
+    response.view_name("requests").send({
+      script : ["user_cabinet"],
+      requests : data,
+      cid :  request.params.cid
+    })
+  }).error(function(err){
+          response.view_name("error").send({
+              error : err
+          });
+      })
+};
 Site.prototype.admin = function ( response, request ) {
   var listener  = response.create_listener();
-  listener.stack <<= this.models.user.With("requests").find_all();
+  listener.stack <<= this.models.user.With("company").find_all();
   listener.success(function(data){
     response.view_name("admin").send({
       script : ["admin_cabinet"],
-      user : request.user.model,
       users : data
     })
   })

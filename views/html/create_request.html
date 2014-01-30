@@ -6,19 +6,11 @@
   <div class="col-md-6">
     <form id="reg_form" method="post"  enctype="multipart/form-data" action="{#url}request.create_request{/url}" role="form" class="form-horizontal">
       <div class="form-group">
-        <label for="num">Номер извещения на офф. сайте</label>
-        <input name="request[num]" type="text" class="form-control" id="num" placeholder="Номер" value="{req.num}">
+        <label for="period">сумма</label>
+        <input name="request[reqamount]" type="text" class="form-control" id="period" placeholder="срок" value="{req.reqamount}">
       </div>
       <div class="form-group">
-        <label for="sum">Сумма займа</label>
-        <input name="request[sum]" type="text" class="form-control" id="sum" placeholder="Сумма" value="{req.sum}">
-      </div>
-      <div class="form-group">
-        <label for="period">На какой срок</label>
-        <input name="request[period]" type="text" class="form-control" id="period" placeholder="срок" value="{req.period}">
-      </div>
-      <div class="form-group">
-        <label for="de">Крайний срок перечисления денег</label>
+        <label for="de">срок</label>
         <input name="request[duedate]" type="date" class="form-control" id="de" placeholder="" value="{req.duedate}">
       </div>
       <div class="form-group">

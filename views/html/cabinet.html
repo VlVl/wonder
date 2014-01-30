@@ -13,10 +13,11 @@
   </thead>
   {#companies}
   <tr id="tr{id}">
-    <td>{companyname}</td>
+    <td><a href="{#url cid=id}site.requests{/url}">{companyname}</a></td>
     <td>{companyinn}</td>
     <td>
-      <ul class="">{#requests}
+      <ul class="">
+        {#requests}
         <li id="{id}">{name}
           <a href="{#url req_id=id}site.request{/url}"><span id="editr{id}" class="glyphicon glyphicon-pencil"></span></a>
           <a><span id="delr{id}" class="glyphicon glyphicon-trash"></span></a>

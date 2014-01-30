@@ -37,9 +37,10 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         {?user.model}
-        <li><a href="{#url t_id=1}site.create_request{/url}">Заявка</a></li>
+        <li><a href="{#url}site.cabinet{/url}">Кабинет</a></li>
         {/user.model}
         {?user.model.admin}
+        <li><a href="{#url}site.admin{/url}">Юзеры</a></li>
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Отчеты <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="{#url t_id=1}site.table{/url}">Уведомление о прекращении блокирования</a></li>

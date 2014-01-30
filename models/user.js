@@ -34,11 +34,9 @@ User.prototype.attributes = function(){
    email : {
    'safe required' : true,
    prefilters     : 'trim' },
-
    pass : {
    'safe required' : true,
    postfilters    : 'md5' },
-
   name : {
     'safe required' : true,
     prefilters     : 'trim' },
@@ -50,14 +48,7 @@ User.prototype.attributes = function(){
     prefilters     : 'trim' },
   tel : {
     'safe required' : true,
-    prefilters     : 'trim' },
-  inn : {
-    'safe' : true,
-    prefilters     : 'trim' },
-  ur : {
-    'safe' : true,
     prefilters     : 'trim' }
-
   };
 }
 
@@ -72,7 +63,6 @@ User.prototype.cookie_hash = function(){
 }
 User.prototype.relations = function () {
   return {
-    'requests'    : this.has_many('request').by('user_id'),
     'company'     : this.has_many('company').by('userref')
   }
 }

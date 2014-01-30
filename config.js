@@ -73,12 +73,14 @@ module.exports = {
       'logout'                : 'user.logout',
 
       'cabinet'               : 'site.cabinet',
+      'cabinet/<uid:\\d+>'               : 'site.cabinet',
       'admin'                 : 'site.admin',
       'error'                 : 'site.error',
 
       'create_request'        : 'request.create_request | post',
 
       'request'               : 'site.request',
+      'requests/<cid:\\d+>'               : 'site.requests',
       'newcompany'               : 'user.create_company | post',
       'company'               : 'site.company',
       'company/<c_id:\\d+>'               : 'site.company',
