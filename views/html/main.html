@@ -51,6 +51,11 @@
         </li>
         {/user.model.admin}
       </ul>
+      {?user.model}
+      <div class="navbar-right">
+      <a href="{#url}user.logout{/url}">Выход</a>
+      </div>
+      {:else}
       <form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">
       <div class="form-group">
       <input name="user[email]" type="email" class="form-control" placeholder="email">
@@ -61,6 +66,7 @@
       <button id="logBut" type="submit" class="btn btn-default">Вход</button>
       <button id="regBut" type="button" class="btn btn-default">Регистрация</button>
       </form>
+      {/user.model}
     </div><!-- /.navbar-collapse -->
   </nav>
   <div class="starter-template">

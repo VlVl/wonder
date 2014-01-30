@@ -1,28 +1,8 @@
 {>"{cd}/main.html"/}
 {<content}
-  <h4>{user.surname} {user.name} {user.patronymic}</h4>
+  <h4>{user.model.surname} {user.model.name} {user.model.patronymic}</h4>
 <div id="alert_div" style="display: none" class="alert alert-success"></div>
-<h4>Компании <small id="add_company" onclick="$('#company_form').toggle();">добавить</small></h4>
-<div id="company_form" style="display: none">
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-      <form id="com_form" method="post" onsubmit="return false;" action="{#url}user.create_company{/url}" role="form" class="form-horizontal">
-        <div class="form-group">
-          <label for="name">Название площадки</label>
-          <input name="company[companyname]" type="text" class="form-control" id="name" placeholder="Название" value="{company.companyname}">
-        </div>
-        <div class="form-group">
-          <label for="inn">ИНН</label>
-          <input name="company[companyinn]" type="text" class="form-control" id="inn" placeholder="ИНН">
-        </div>
-        <input type="hidden" name="id" value="{req.id}">
-        <button type="submit" class="btn btn-default">создать</button>
-      </form>
-    </div>
-    <div class="col-md-3"></div>
-  </div>
-</div>
+<h4>Компании <a href="{#url}site.company{/url}"><small id="add_company">добавить</small></a></h4>
 <table class="table table-condensed">
   <thead>
     <tr>
@@ -42,10 +22,11 @@
           <a><span id="delr{id}" class="glyphicon glyphicon-trash"></span></a>
         </li>
         {/requests}
+        <li><a href="{#url req_id=0 cid=id}site.request{/url}">Еще</a> </li>
       </ul>
     </td>
     <td>
-      <a href="#"><span id="edit{id}" class="glyphicon glyphicon-pencil"></span></a>
+      <a href="{#url c_id=id}site.company{/url}"><span id="edit{id}" class="glyphicon glyphicon-pencil"></span></a>
       <a href="#"><span id="del{id}" class="glyphicon glyphicon-trash"></span></a>
     </td>
   </tr>

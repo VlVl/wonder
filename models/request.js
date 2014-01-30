@@ -31,9 +31,9 @@ Request.prototype.get_table_name = function(){
  */
 Request.prototype.attributes = function(){
   return {
-    company_id : 'safe required',
-    reqamount : 'safe required',
-    duedate   : 'safe required',
+    company_id : 'safe',
+    reqamount : 'safe',
+    duedate   : 'safe',
     sberorderid : 'safe'
   };
 }

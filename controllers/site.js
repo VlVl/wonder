@@ -52,6 +52,10 @@ Site.prototype.index = function ( response, request ) {
 //    response.send({user:response.user ? response.user.model : null});
     response.send();
 };
+Site.prototype.error = function ( response, request ) {
+//    response.send({user:response.user ? response.user.model : null});
+    response.view_name("error").send({error : "error " + request.params.error});
+};
 
 Site.prototype.edit_profile = function ( response, request ) {
 
@@ -59,24 +63,56 @@ Site.prototype.edit_profile = function ( response, request ) {
 
 Site.prototype.request = function ( response, request ) {
   var id = request.params.req_id;
-  var cid = request.params.com_id;
+  var cid = request.params.cid;
+  if(parseInt(id) != 0){
+    this.models.request.find_by_attributes({id : id})
+        .on("success", function(req){
+          response.view_name("create_request").send({
+            req : req,
+            script : "user_cabinet"});
+        })
+        .on("error",function(err){
+            response.view_name("error").send({
+                error : err
+            });
+        })
+  }else{
+    this.models.company.find_by_attributes({userref : request.user.model.id})
+      .on("success", function(companies){
+        response.view_name("create_request").send({
+          cid : cid,
+          companies : companies,
+          script : ["user_cabinet"]});
+      })
+      .on("error",function(err){
+        response.view_name("error").send({
+          error : err
+        });
+      })
+  }
+}
+Site.prototype.company = function ( response, request ) {
+  var id = request.params.c_id;
   if(id){
-    this.models.request.find_by_attributes({id : id}).on("success", function(req){
-      response.view_name("create_request").send({
-        req : req,
-        user:response.user.model,
-        script : "user_cabinet"});
-    })
+    this.models.company.find_by_attributes({id : id})
+        .on("success", function(com){
+          response.view_name("company").send({
+            company: com,
+            script : "user_cabinet"});
+        })
+        .on("error",function(err){
+            response.view_name("error").send({
+                error : err
+            });
+        })
   }else
-    response.view_name("create_request").send({user:response.user.model});
+    response.view_name("company").send({script : "user_cabinet"});
 }
 
 Site.prototype.table = function( response, request ){
-  var listener  = response.create_listener();
   this.app.db.query(this.sql[request.params.t_id], function(e, res){
     response.view_name("table").send({
       script : ["user_cabinet"],
-      user : request.user.model,
       fields : res.fields,
       html: _tbody(res.fields,res.result)
     })
@@ -101,11 +137,11 @@ Site.prototype.table = function( response, request ){
 };
 Site.prototype.register = function( response, request ){
   response.view_name("reg").send({
-    script : "user_cabinet"
+    script : ["user_cabinet"]
   })
 };
 Site.prototype.cabinet = function ( response, request ) {
-  if(!request.user.model) return request.redirect( this.create_url('site.index'));
+//  if(!request.user.model) return request.redirect( this.create_url('site.index'));
   var listener  = response.create_listener();
   listener.stack <<= this.models.company.With("request").find_all_by_attributes({
     userref : request.user.model.id
@@ -113,10 +149,13 @@ Site.prototype.cabinet = function ( response, request ) {
   listener.success(function(data){
     response.view_name("cabinet").send({
       script : ["user_cabinet"],
-      user : request.user.model,
       companies : data
     })
-  })
+  }).error(function(err){
+          response.view_name("error").send({
+              error : err
+          });
+      })
 };
 Site.prototype.admin = function ( response, request ) {
   var listener  = response.create_listener();

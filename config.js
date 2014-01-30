@@ -60,7 +60,7 @@ module.exports = {
       'edit_profile'             : 'site.edit_profile',
 
       'del'                      : 'request.remove | post',
-      'request/<com_id:\\d+>/<req_id:\\d+>'    : 'site.request',
+      'request/<cid:\\d+>/<req_id:\\d+>'    : 'site.request',
       'request_info'             : 'request.info | post',
 
       'newuser'               : 'site.register',
@@ -74,12 +74,14 @@ module.exports = {
 
       'cabinet'               : 'site.cabinet',
       'admin'                 : 'site.admin',
+      'error'                 : 'site.error',
 
-      'new_request'           : 'site.new_request',
       'create_request'        : 'request.create_request | post',
 
       'request'               : 'site.request',
-      'company'               : 'user.create_company',
+      'newcompany'               : 'user.create_company | post',
+      'company'               : 'site.company',
+      'company/<c_id:\\d+>'               : 'site.company',
       'table/<t_id:\\d+>'     : 'site.table'
     }
   },

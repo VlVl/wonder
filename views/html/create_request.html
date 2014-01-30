@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-md-3"></div>
   <div class="col-md-6">
-    <form id="reg_form" method="post"  enctype="multipart/form-data" action="{#url}site.create_request{/url}" role="form" class="form-horizontal">
+    <form id="reg_form" method="post"  enctype="multipart/form-data" action="{#url}request.create_request{/url}" role="form" class="form-horizontal">
       <div class="form-group">
         <label for="num">Номер извещения на офф. сайте</label>
         <input name="request[num]" type="text" class="form-control" id="num" placeholder="Номер" value="{req.num}">
@@ -22,41 +22,25 @@
         <input name="request[duedate]" type="date" class="form-control" id="de" placeholder="" value="{req.duedate}">
       </div>
       <div class="form-group">
-        <label for="name">Название площадки</label>
-        <input name="request[name]" type="text" class="form-control" id="name" placeholder="Название" value="{req.name}">
+        <label for="company">Название площадки</label>
+        <select name="request[company_id]" id="company">
+            {#companies}
+            <option value="{id}">{companyname}</option>
+            {/companies}
+        </select>
       </div>
       <div class="form-group">
-        <label for="name">Файлы</label>
-        <input name="request[files[]]" type="file" class="form-control" id="files" multiple placeholder="Файлы">
+        <label for="files">Файлы</label>
+        <input name="files[]" type="file" class="form-control" id="files" multiple placeholder="Файлы">
       </div>
       <input type="hidden" name="id" value="{req.id}">
+      <input type="hidden" name="cid" value="{cid}">
       <button type="submit" class="btn btn-default">Отправить заявку</button>
     </form>
   </div>
   <div class="col-md-3"></div>
 </div>
 
-
-
-<!--
-  {?user.guest}
-
-  <strong><a href="#" onclick="$('#login').focus();">Login</a></strong> or
-  <strong><a href="#" onclick="$('#reg_login').focus();">register</a></strong>
-  to create a topic
-
-  {:else}
-  <form id="topic" action="{#url}topic.create{/url}" method="post">
-    <div class="control-group">
-      <input placeholder="Type the name" type="text" name="topic[name]"/>
-    </div>
-    <div class="control-group">
-      <textarea placeholder="Type the description" name="topic[description]"></textarea>
-    </div>
-    <input type="submit" value="Publish!">
-  </form>
-  {/user.guest}
--->
   <script type="text/javascript">
     $(function(){
       var options = {
