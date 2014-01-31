@@ -45,8 +45,8 @@
                     {:else}
                     <form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">
                         <div class="row1">
-                            <div class="Input Focused"><input name="user[email]" type="text" placeholder="email"></div>
-                            <div class="Input Focused"><input name="user[pass]" type="text" placeholder="Пароль"></div>
+                            <div class="Input"><input name="user[email]" type="text" placeholder="email"></div>
+                            <div class="Input"><input name="user[pass]" type="text" placeholder="Пароль"></div>
                             <div class="Button" onclick="$('#logForm').submit();">ВХОД</div>
                             <div class="Button" onclick="$('.window,.overlay').show();">Регистрация</div>
                         </div>
@@ -94,37 +94,37 @@
         <li>
             <div class="cell">Фамилия</div>
             <div class="cell">
-                <div class="Input Focused"><input name="user[surname]" type="text" placeholder="Ввдите фамилию"></div>
+                <div class="Input"><input name="user[surname]" type="text" placeholder="Ввдите фамилию"></div>
             </div>
         </li>
         <li>
             <div class="cell">Имя</div>
             <div class="cell">
-                <div class="Input Focused"><input name="user[name]" type="text" placeholder="Ввдите имя"></div>
+                <div class="Input"><input name="user[name]" type="text" placeholder="Ввдите имя"></div>
             </div>
         </li>
         <li>
             <div class="cell">Отчество</div>
             <div class="cell">
-                <div class="Input Focused"><input name="user[patronymic]" type="text" placeholder="Ввдите отчество"></div>
+                <div class="Input"><input name="user[patronymic]" type="text" placeholder="Ввдите отчество"></div>
             </div>
         </li>
         <li>
             <div class="cell">Телефон</div>
             <div class="cell">
-                <div class="Input Focused"><input name="user[tel]" type="text" placeholder="Ввдите телефон"></div>
+                <div class="Input"><input name="user[tel]" type="text" placeholder="Ввдите телефон"></div>
             </div>
         </li>
         <li>
             <div class="cell">Email</div>
             <div class="cell">
-                <div class="Input Focused"><input name="user[email]" type="email" placeholder="Ввдите email"></div>
+                <div class="Input"><input name="user[email]" type="email" placeholder="Ввдите email"></div>
             </div>
         </li>
         <li>
             <div class="cell">Пароль</div>
             <div class="cell">
-                <div class="Input Focused"><input name="user[pass]" type="password" placeholder="Ввдите пароль"></div>
+                <div class="Input"><input name="user[pass]" type="password" placeholder="Ввдите пароль"></div>
             </div>
         </li>
     </ul>
@@ -143,8 +143,13 @@
     $("#regBut").click(function(){
       window.location = "/newuser";
       return false;
-    })
-    $('#tab').dataTable( {
+    });
+      $(".Input input,textarea").focus(function(){
+          $(this).parent().addClass("Focused")
+      }).blur(function(){
+                  $(this).parent().removeClass("Focused")
+              });
+      $('#tab').dataTable( {
       "sDom": 'T<"clear">lfrtip',
       "oTableTools": {
         "sSwfPath": "/../js/DataTables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"

@@ -29,11 +29,11 @@ Site.prototype._init = function( params ){
  * @return {Object}
  */
 Site.prototype.global_view_params = function( response, request ){
-    var admin = request.user.model && request.user.model.admin==1;
+    var admin = (request.user.model && request.user.model.admin==1) ? 1 : null;
   return {
     // из всех шаблонов можно будет обратиться к UserIdentity привязанному к текущему пользователю
     user : request.user,
-    admin : request.user.model.admin,
+    admin : admin,
     cab_url : admin ? "/admin" : "/cabinet"
   }
 };
