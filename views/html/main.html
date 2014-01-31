@@ -48,7 +48,7 @@
                             <div class="Input"><input name="user[email]" type="text" placeholder="email"></div>
                             <div class="Input"><input name="user[pass]" type="password" placeholder="Пароль"></div>
                             <div class="Button" onclick="$('#logForm').submit();">ВХОД</div>
-                            <div class="Button" onclick="$('.window._reg,.overlay._reg').show();">Регистрация</div>
+                            <div class="Button" onclick="$('.window._reg,.overlay').show();">Регистрация</div>
                         </div>
                         <div class="row2">
                             <div class="Checkbox">
@@ -86,7 +86,8 @@
   </div>
 </div>
 
-<div class="overlay _reg"></div>
+<div class="overlay"></div>
+{+window}
 <div class="window _reg" style="margin-top:-150px;">
     <div class="title">Регистрация</div>
     <form method="post" id="reg" action="{#url}user.register{/url}" role="form">
@@ -129,7 +130,7 @@
         </li>
     </ul>
     <div class="btn">
-        <div class="Button Second" onclick="$('.window._reg,.overlay._reg').hide();">отмена</div>
+        <div class="Button Second" onclick="$('.window._reg,.overlay').hide();">отмена</div>
         <div class="Button" onclick="$('#reg').submit();">ОК</div>
     </div>
     </form>

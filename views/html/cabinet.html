@@ -33,7 +33,8 @@
   </tr>
   {/companies}
 </table>
-<div class="overlay _com"></div>
+{/content}
+{<window}
 <div class="window _com" style="margin-top:-150px;">
     <div class="title">Добавить компанию</div>
     <form id="com" method="post"  action="{#url}user.create_company{/url}" role="form">
@@ -61,5 +62,4 @@
         </div>
         <form>
 </div>
-
-{/content}
+{/window}
