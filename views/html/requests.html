@@ -2,7 +2,7 @@
 {<content}
 <h4>{user.model.surname} {user.model.name} {user.model.patronymic}</h4>
 <div id="alert_div" style="display: none" class="alert alert-success"></div>
-<h4>Заявки <small style="cursor: hand;" onclick="$('.window._req,.overlay').show();">добавить</small></h4>
+<h4>Заявки <small style="cursor: pointer;" onclick="$('.window._req,.overlay').show();">добавить</small></h4>
 <table class="table table-condensed">
   <thead>
   <tr>
@@ -60,9 +60,7 @@
             <li>
                 <div class="cell">Компания</div>
                 <div class="cell">
-                    <div class="Input">
                         <input name="files[]" type="file" multiple placeholder="Файлы">
-                    </div>
                 </div>
             </li>
         </ul>
