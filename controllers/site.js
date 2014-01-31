@@ -150,7 +150,7 @@ Site.prototype.cabinet = function ( response, request ) {
   if(!id) id = request.user.model.id;
   var listener  = response.create_listener();
 //  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
-    if(request.user.mode.admin==1){
+    if(request.user.model.admin==1){
         return this.admin( response, request)
     }
   listener.stack <<= this.models.company.find_all_by_attributes({
