@@ -33,7 +33,7 @@ Site.prototype.global_view_params = function( response, request ){
   return {
     // из всех шаблонов можно будет обратиться к UserIdentity привязанному к текущему пользователю
     user : request.user,
-    admin : admin,
+    admin : request.user.model.admin,
     cab_url : admin ? "/admin" : "/cabinet"
   }
 };
