@@ -150,14 +150,17 @@ Site.prototype.cabinet = function ( response, request ) {
   if(!id) id = request.user.model.id;
   var listener  = response.create_listener();
 //  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
+    if(request.user.mode.admin==1){
+        return this.admin( response, request)
+    }
   listener.stack <<= this.models.company.find_all_by_attributes({
     userref : id
   });
   listener.success(function(data){
-    response.view_name("cabinet").send({
-      script : ["user_cabinet"],
-      companies : data
-    })
+        response.view_name("cabinet").send({
+          script : ["user_cabinet"],
+          companies : data
+        })
   }).error(function(err){
           response.view_name("error").send({
               error : err
