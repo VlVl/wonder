@@ -36,7 +36,7 @@
     <div class="header">
         <div class="width980">
             <div class="cell">
-                <a href="/"><div class="site_name">Vovucho</div></a>
+                <div class="site_name" onclick="window.lacation='/';">Vovucho</div>
             </div>
             <div class="cell fr">
                 <div class="authorization">
@@ -66,7 +66,7 @@
 
     <ul class="menu">
         {?user.model}
-        <li><a href="{cab_url}">Кабинет</a></li>
+        <li><a href="{cab_url}">Кабинет {admin}</a></li>
         {?admin}
         <li><a>Отчеты <b class="caret"></b></a>
             <ul id="am">
