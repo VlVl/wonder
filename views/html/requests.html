@@ -2,7 +2,7 @@
 {<content}
 <h4>{user.model.surname} {user.model.name} {user.model.patronymic}</h4>
 <div id="alert_div" style="display: none" class="alert alert-success"></div>
-<h4>Заявки <a href="{#url cid=cid req_id=0}site.request{/url}"><small id="add_company">добавить</small></a></h4>
+<h4>Заявки <small style="cursor: hand;" onclick="$('.window._req,.overlay').show();">добавить</small></h4>
 <table class="table table-condensed">
   <thead>
   <tr>
@@ -26,3 +26,52 @@
   {/requests}
 </table>
 {/content}
+{<window}
+<div class="window _req" style="margin-top:-150px;">
+    <div class="title">Добавить компанию</div>
+    <form id="req" method="post"  enctype="multipart/form-data" action="{#url}request.create_request{/url}" role="form" class="form-horizontal">
+        <ul>
+            <li>
+                <div class="cell">Сумма</div>
+                <div class="cell">
+                    <div class="Input">
+                        <input name="request[reqamount]" type="text" placeholder="Сумма" value="{req.reqamount}">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cell">Срок</div>
+                <div class="cell">
+                    <div class="Input">
+                        <input name="request[duedate]" type="date" placeholder="Срок" value="{req.duedate}">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cell">Компания</div>
+                <div class="cell">
+                    <select name="request[company_id]">
+                        {#companies}
+                        <option value="{id}">{companyname}</option>
+                        {/companies}
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="cell">Компания</div>
+                <div class="cell">
+                    <div class="Input">
+                        <input name="files[]" type="file" multiple placeholder="Файлы">
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <input type="hidden" name="id" value="{req.id}">
+        <input type="hidden" name="cid" value="{cid}">
+        <div class="btn">
+            <div class="Button Second" onclick="$('.window._req,.overlay').hide();">отмена</div>
+            <div class="Button" onclick="$('#req').submit();">ОК</div>
+        </div>
+        <form>
+</div>
+{/window}
