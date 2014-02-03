@@ -34,6 +34,6 @@ File.prototype.attributes = function(){
     name : {
       'safe required' : true,
       prefilters     : 'trim' },
-    req_id : 'safe required'
+    company_id : 'safe required'
   };
 }

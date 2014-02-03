@@ -5,15 +5,18 @@
   <thead>
   <tr>
     <th>Пользователь</th>
-    <th>Заявки</th>
+    <th>Компании</th>
   </tr>
   </thead>
   {#users}
   <tr id="tr{id}">
-    <td style="width: 50%;"><a href="{#url uid=id}site.cabinet{/url}">{surname} {name}</a></td>
+    <td style="width: 50%;">{surname} {name}   {tel}</td>
     <td>
-      <a href="{#url req_id=id}site.request{/url}"><span id="edit{id}" class="glyphicon glyphicon-pencil"></span></a>
-      <a href="#"><span id="del{id}" class="glyphicon glyphicon-trash"></span></a>
+      <ul class="">
+      {#company}
+      <li id="{id}"><a href="{#url cid=id}site.requests{/url}">{companyname} {companyinn}</a></li>
+      {/company}
+      </ul>
     </td>
   </tr>
   {/users}

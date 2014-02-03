@@ -47,6 +47,7 @@ Company.prototype.attributes = function(){
 Company.prototype.relations = function () {
   return {
     'user'    : this.belongs_to('user').by('userref'),
-    'request' : this.has_many('request').by('company_id')
+    'request' : this.has_many('request').by('company_id'),
+    'files'    : this.has_many('file').by('company_id')
   }
 }

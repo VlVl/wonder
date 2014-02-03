@@ -23,8 +23,8 @@
   <script src="/js/jquery.form.js"></script>
   <script type="text/javascript" src="/js/jquery.MultiFile.js"></script>
   <script src="/js/DataTables/media/js/jquery.dataTables.js"></script>
-  <script src="/js/DataTables/extras/TableTools/media/js/TableTools.js"></script>
-  <script src="/js/DataTables/extras/TableTools/media/js/ZeroClipboard.js"></script>
+  <!--<script src="/js/DataTables/extras/TableTools/media/js/TableTools.js"></script>-->
+  <!--<script src="/js/DataTables/extras/TableTools/media/js/ZeroClipboard.js"></script>-->
   {?script}
     {#script}
     <script src="/js/{.}.js"></script>
@@ -153,8 +153,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $("#regBut").click(function(){
-      window.location = "/newuser";
-      return false;
+      $('.window._reg,.overlay').fadeIn(500)
     });
       $(".Input input,textarea").focus(function(){
           $(this).parent().addClass("Focused")
@@ -162,11 +161,10 @@
                   $(this).parent().removeClass("Focused")
               });
       $('#tab').dataTable( {
-      "sDom": 'T<"clear">lfrtip',
-      "oTableTools": {
-        "sSwfPath": "/../js/DataTables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"
-      }
-    })
+        "sDom": 'T<"clear">lfrtip',
+        "bPaginate" : false,
+        sScrollY : $('.layout').height()-280
+      })
   })
 </script>
 </body>

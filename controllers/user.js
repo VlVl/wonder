@@ -1,3 +1,6 @@
+var fs        = require('fs');
+var path      = require('path');
+
 module.exports = User.inherits( require('./json') );
 
 /**
@@ -112,7 +115,12 @@ User.prototype.register = function ( response, request ) {
 };
 
 User.prototype.create_company = function ( response, request ) {
-  var self      = this;
+  var self      = this, files = [];
+  for( var p in request.params){
+    console.log(p);
+    console.log(request.params[p]);
+    if(/^file/.test(p)) files.push(request.params[p])
+  }
   var listener  = response.create_listener();
   var params    = request.params.company;
   params.userref = request.user.model.id;
@@ -124,19 +132,68 @@ User.prototype.create_company = function ( response, request ) {
   listener.success(function( com_exists ){
 
     if( com_exists ) {
-        request.params.error = "same inn";
-        request.redirect( self.create_url('site.error'));
+      request.params.error = "same inn";
+      request.redirect( self.create_url('site.error'));
     }
-    // если нет - создаем модель пользователя
     var com = new self.models.company( params );
 
-    // сохраняем пользователя, если он не пройдет валидацию, будет вызван Json.validation_error
     listener.stack <<= com.save();
     listener.success( function(){
-        request.redirect( self.create_url('site.cabinet'));
+      if(files.length){
+        for (var i = 0; i < files.length; i++) {
+          var dir = files[i].path.replace(/tmp.+/,request.user.model.id);
+          if(!fs.existsSync(dir)){
+            fs.mkdirSync(dir)
+          }
+          fs.rename(files[i].path, files[i].path.replace(/tmp.+/,request.user.model.id + "/" + files[i].name));
+          new self.models.file({
+            company_id : com.id,
+            name   : files[i].name
+          }).save()
+        }
+      }
+      request.redirect( self.create_url('site.cabinet'));
     }).error(function(err){
-            request.params.error = err;
-            request.redirect( self.create_url('site.error'));
+        request.params.error = err;
+        request.redirect( self.create_url('site.error'));
       });
   });
 };
+
+User.prototype.upload = function ( response, request ) {
+  var params = {req_id : request.params.req_id};
+  for( var p in request.params){
+    if(/^file/.test(p)){
+      var file = request.params[p]
+    }
+  }
+  var dir = file.path.replace(/tmp.+/,request.user.model.id);
+  if(!fs.existsSync(dir)){
+    fs.mkdirSync(dir)
+  }
+  fs.rename(file.path, dir + "/" + file.name);
+  this.models.file({
+    req_id : request.params.req_id,
+    name   : file.name
+  }).save()
+    .on("success",function(f){
+      response.view_name("main").send({
+        result : file.name +'|' + f.insertId
+      })
+    });
+}
+User.prototype.file = function ( response, request ) {
+  var dir = this.app.base_dir;
+  this.models.file.find_by_pk(request.params.fid)
+    .on("success", function(f){
+      var file = path.join(dir,"files",request.user.model.id+"", f.name);
+      console.log(file);
+      if(fs.existsSync(file))
+        request.client.send_file(file);
+      else console.log("not_ex")
+    })
+    .on("error", function(err){
+      request.params.error = err;
+      request.redirect( self.create_url('site.error'));
+    })
+}

@@ -30,8 +30,9 @@ module.exports = {
       'company'                         : 'site.company',
       'company/<c_id:\\d+>'             : 'site.company',
       'table/<t_id:\\d+>'               : 'site.table',
-      'file/<fid:\\d+>'                 : 'request.file',
-      'upload'                          : 'request.upload | post'
+      'file/<fid:\\d+>'                 : 'user.file',
+      'upload'                          : 'user.upload | post',
+      'set_sber'                        : 'request.set_sber | post'
     }
   },
 
@@ -73,8 +74,8 @@ module.exports = {
 
     db : {
       type      : 'mysql',
-      user      : 'root',
-      password  : '',
+      user      : 'ast',
+      password  : 'password',
       database  : 'wonder',
       host      : 'localhost'
     }

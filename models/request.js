@@ -47,8 +47,6 @@ Request.prototype.attributes = function(){
  */
 Request.prototype.relations = function () {
   return {
-    // топик пренадлежит пользователю
-    'company'   : this.belongs_to( 'company' ).by( 'company_id' ),
-    'files'    : this.has_many('file').by('req_id')
+    'company'   : this.belongs_to( 'company' ).by( 'company_id' )
   }
 };

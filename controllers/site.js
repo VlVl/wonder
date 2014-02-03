@@ -1,4 +1,3 @@
-// наследуем Site от Controller
 module.exports = Site.inherits( global.autodafe.Controller );
 
 /**
@@ -109,15 +108,23 @@ Site.prototype.company = function ( response, request ) {
             });
         })
   }else
-    response.view_name("company").send({script : "user_cabinet"});
+    response.view_name("company").send({script : ["user_cabinet"]});
 }
 
 Site.prototype.table = function( response, request ){
   this.app.db.query(this.sql[request.params.t_id], function(e, res){
+    var msgs = [
+    'Уведомление о прекращении блокирования',
+    'Уведомление о поступлении заявки на кредитование',
+    'Уведомление о блокировке денежных средств по кредитной заявке',
+    'Подтверждение кредитной заявки на участие в аукционе',
+    'Уведомление о поступлении отложенной заявки на участие в аукционе'
+    ];
     response.view_name("table").send({
-      script : ["user_cabinet"],
+      script : ["admin_cabinet"],
       fields : res.fields,
-      html: _tbody(res.fields,res.result)
+      html: _tbody(res.fields,res.result),
+      msg : msgs[request.params.t_id-1]
     })
   })
   function _tbody(fields,values){
@@ -126,8 +133,9 @@ Site.prototype.table = function( response, request ){
       var obj = values[i];
       html += "<tr>";
       for (var j = 0; j < fields.length; j++) {
-        var txt = (/date/.test(fields[j].name) && fields[j].name != "enddate" && fields[j].name != "reqdate")
-          ? _d(new Date(obj[fields[j].name])) : obj[fields[j].name];
+//        var txt = (/date/.test(fields[j].name) && fields[j].name != "enddate" && fields[j].name != "reqdate")
+        var txt = (/date/.test(fields[j].name))
+          ? _d(obj[fields[j].name]) : obj[fields[j].name];
         html += "<td>" + txt + "</td>"
       }
       html += "</tr>"
@@ -135,7 +143,11 @@ Site.prototype.table = function( response, request ){
     return html
   }
   function _d(d){
-    return d.getDate() + '.' + d.getMonth() + '.' + d.getFullYear();
+    if(/GMT/.test(d)){
+      var date = new Date(d);
+      return (date.getMonth()<9 ?"0"+(date.getMonth()+1) : date.getMonth()+1)  + '/' +
+        (date.getDate()<10 ? "0"+date.getDate() : date.getDate()) + '/' + date.getFullYear();
+    }else return d;
   }
 };
 Site.prototype.cabinet = function ( response, request ) {
@@ -143,12 +155,12 @@ Site.prototype.cabinet = function ( response, request ) {
     return request.redirect( this.create_url('site.index'));
   var id = request.params.uid;
   var listener  = response.create_listener();
-//  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
     if(request.user.model.admin==1 && !id){
         return this.admin( response, request)
     }
   if(!id) id = request.user.model.id;
-  listener.stack <<= this.models.company.find_all_by_attributes({
+
+  listener.stack <<= this.models.company.With("request").With('files').find_all_by_attributes({
     userref : id
   });
   listener.success(function(data){
@@ -167,12 +179,12 @@ Site.prototype.requests = function ( response, request ) {
     return request.redirect( this.create_url('site.index'));
   var listener  = response.create_listener();
 //  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
-  listener.stack <<= this.models.request.With("files").find_all_by_attributes({
+  listener.stack <<= this.models.request.With('company').find_all_by_attributes({
     company_id : request.params.cid
   });
   listener.success(function(data){
     response.view_name("requests").send({
-      script : ["user_cabinet"],
+      script : request.user.model.admin == 1 ? ["admin_cabinet"] : ["user_cabinet"],
       requests : data,
       cid :  request.params.cid
     })
@@ -184,7 +196,7 @@ Site.prototype.requests = function ( response, request ) {
 };
 Site.prototype.admin = function ( response, request ) {
   var listener  = response.create_listener();
-  listener.stack <<= this.models.user.With("company").find_all();
+  listener.stack <<= this.models.user.With("company").find_all_by_attributes({admin : 0});
   listener.success(function(data){
     response.view_name("admin").send({
       script : ["admin_cabinet"],
@@ -192,6 +204,8 @@ Site.prototype.admin = function ( response, request ) {
     })
   })
 }
+
+
 Site.prototype.sql = {
   '1' : "select" +
   " ast_inbox_documents_utf8.id as document_id," +

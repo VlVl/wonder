@@ -1,8 +1,13 @@
 $(document).ready(function(){
-  $("button[id]").click(function(){
-    var id = this.id.replace(/r/g,"");
-    $.post("/request_info",{id : id}, function(html){
-      $("d"+id).append(html)
+  $("div[id^=sbbut]").click(function(){
+    var id = this.id.replace(/sbbut/,"");
+    $.post("/set_sber",{id : id, soid : $("#soid" + id).val()}, function(data){
+      $("#alert_div").text("Изменено!").slideDown(function(){
+        var self = $(this);
+        setTimeout(function(){
+          self.slideUp();
+        },500)
+      })
     })
   })
 

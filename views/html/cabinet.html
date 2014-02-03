@@ -2,29 +2,42 @@
 {<content}
   <h4>{user.model.surname} {user.model.name} {user.model.patronymic}</h4>
 <div id="alert_div" style="display: none" class="alert alert-success"></div>
-<h4>Компании <small style="cursor: pointer;" onclick="$('.window._com,.overlay').show();">добавить</small></h4>
+<h4>Компании
+  {?admin}
+  </h4>
+  {:else}
+  <small style="cursor: pointer;" onclick="$('.window._com,.overlay').show();">добавить</small></h4>
+  {/admin}
 <table class="table table-condensed">
   <thead>
     <tr>
       <th>Название</th>
       <th>Инн</th>
-      <th>Заявки</th>
+      <!--<th>Заявки</th>-->
     </tr>
   </thead>
   {#companies}
   <tr id="tr{id}">
     <td><a href="{#url cid=id}site.requests{/url}">{companyname}</a></td>
     <td>{companyinn}</td>
+    <!--<td>-->
+      <!--<ul class="">-->
+        <!--{#request}-->
+        <!--<li id="{id}">{duedate}-->
+          <!--<a href="{#url req_id=id}site.request{/url}"><span id="editr{id}" class="glyphicon glyphicon-pencil"></span></a>-->
+          <!--<a><span id="delr{id}" class="glyphicon glyphicon-trash"></span></a>-->
+        <!--</li>-->
+        <!--{/request}-->
+      <!--</ul>-->
+    <!--</td>-->
     <td>
-      <ul class="">
-        {#requests}
-        <li id="{id}">{name}
-          <a href="{#url req_id=id}site.request{/url}"><span id="editr{id}" class="glyphicon glyphicon-pencil"></span></a>
-          <a><span id="delr{id}" class="glyphicon glyphicon-trash"></span></a>
-        </li>
-        {/requests}
-        <li><a href="{#url req_id=0 cid=id}site.request{/url}">Еще</a> </li>
+      <ul>
+      {#files}
+        <li><a target="_blank" href="/file/{id}">{name}</a></li>
+      {/files}
       </ul>
+      <a href="#" onclick="$(this).next('input').click();">Добавить</a>
+      <input id="_ff{id}" rel="{id}" style="display: none" name="file" class="mult" type="file">
     </td>
     <td>
       <a href="{#url c_id=id}site.company{/url}"><span id="edit{id}" class="glyphicon glyphicon-pencil"></span></a>
@@ -37,7 +50,7 @@
 {<window}
 <div class="window _com" style="margin-top:-150px;">
     <div class="title">Добавить компанию</div>
-    <form id="com" method="post"  action="{#url}user.create_company{/url}" role="form">
+    <form id="com" method="post" enctype="multipart/form-data" action="{#url}user.create_company{/url}" role="form">
         <ul>
             <li>
                 <div class="cell">Название</div>
@@ -55,6 +68,13 @@
                     </div>
                 </div>
             </li>
+          <li>
+            <div class="cell">Файлы</div>
+            <div class="cell">
+              <input id="_f" style="display: none" name="file" class="multi" type="file" placeholder="Файлы">
+              <a href="#" onclick="$('#_f').click();">Добавить</a>
+            </div>
+          </li>
         </ul>
         <div class="btn">
             <div class="Button Second" onclick="$('.window._com,.overlay').hide();">отмена</div>
@@ -62,4 +82,6 @@
         </div>
         <form>
 </div>
+<form style="display:none;" target="upload_iframe" enctype="multipart/form-data" action="/upload" method="post" id="upload-form"/></form>
+<iframe id="upload_iframe" name="upload_iframe" style="width:0;height:0;border:0;"/>
 {/window}
