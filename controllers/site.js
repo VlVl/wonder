@@ -29,9 +29,12 @@ Site.prototype._init = function( params ){
  * @return {Object}
  */
 Site.prototype.global_view_params = function( response, request ){
+    var admin = (request.user.model && request.user.model.admin==1) ? 1 : null;
   return {
     // из всех шаблонов можно будет обратиться к UserIdentity привязанному к текущему пользователю
-    user : request.user
+    user : request.user,
+    admin : admin,
+    cab_url : admin ? "/admin" : "/cabinet"
   }
 };
 
@@ -135,26 +138,24 @@ Site.prototype.table = function( response, request ){
     return d.getDate() + '.' + d.getMonth() + '.' + d.getFullYear();
   }
 };
-Site.prototype.register = function( response, request ){
-  response.view_name("reg").send({
-    script : ["user_cabinet"]
-  })
-};
 Site.prototype.cabinet = function ( response, request ) {
   if(!request.user.model)
     return request.redirect( this.create_url('site.index'));
   var id = request.params.uid;
-  if(!id) id = request.user.model.id;
   var listener  = response.create_listener();
 //  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
+    if(request.user.model.admin==1 && !id){
+        return this.admin( response, request)
+    }
+  if(!id) id = request.user.model.id;
   listener.stack <<= this.models.company.find_all_by_attributes({
     userref : id
   });
   listener.success(function(data){
-    response.view_name("cabinet").send({
-      script : ["user_cabinet"],
-      companies : data
-    })
+        response.view_name("cabinet").send({
+          script : ["user_cabinet"],
+          companies : data
+        })
   }).error(function(err){
           response.view_name("error").send({
               error : err

@@ -5,7 +5,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Bootstrap -->
-  <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="screen">
+    <!--<link href="/css/Interface.css" rel="stylesheet" type="text/css" media="screen">-->
+    <link href="/css/bootstrap.css" rel="stylesheet">
   <link href="/js/DataTables/media/css/jquery.dataTables.css" rel="stylesheet">
   <link href="/js/DataTables/extras/TableTools/media/css/TableTools.css" rel="stylesheet">
 
@@ -19,6 +21,7 @@
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="/js/jquery.validate.min.js"></script>
   <script src="/js/jquery.form.js"></script>
+  <script type="text/javascript" src="/js/jquery.MultiFile.js"></script>
   <script src="/js/DataTables/media/js/jquery.dataTables.js"></script>
   <script src="/js/DataTables/extras/TableTools/media/js/TableTools.js"></script>
   <script src="/js/DataTables/extras/TableTools/media/js/ZeroClipboard.js"></script>
@@ -29,50 +32,121 @@
   {/script}
 </head>
 <body>
-<!--<div class="container">-->
+<div class="layout">
 
-  <nav class="navbar navbar-default" role="navigation">
+    <div class="header">
+        <div class="width980">
+            <div class="cell">
+                <div class="site_name" onclick="window.lacation='/';">Vovucho</div>
+            </div>
+            <div class="cell fr">
+                <div class="authorization">
+                    {?user.model}
+                    <a href="/logout"><div class="Button">ВЫХОД</div></a>
+                    {:else}
+                  <form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">
+                    <div class="form-group">
+                      <input name="user[email]" type="email" class="form-control" placeholder="email">
+                    </div>
+                    <div class="form-group">
+                      <input name="user[pass]" type="password" class="form-control" placeholder="password">
+                    </div>
+                    <button id="logBut" type="submit" class="btn btn-default">Вход</button>
+                    <button id="regBut" type="button" class="btn btn-default">Регистрация</button>
+                  </form>
+                    <!--<form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">-->
+                        <!--<div class="row1">-->
+                            <!--<div class="Input"><input name="user[email]" type="text" placeholder="email"></div>-->
+                            <!--<div class="Input"><input name="user[pass]" type="password" placeholder="Пароль"></div>-->
+                            <!--<div class="Button" onclick="$('#logForm').submit();">ВХОД</div>-->
+                            <!--<div class="Button" onclick="$('.window._reg,.overlay').show();">Регистрация</div>-->
+                        <!--</div>-->
+                        <!--<div class="row2">-->
+                            <!--<div class="Checkbox">-->
+                                <!--<div class="box">&times;</div>-->
+                                <!--<span>не выходить</span>-->
+                            <!--</div>-->
+                            <!--<a href="" title="" class="forgot">Забыли пароль?</a>-->
+                        <!--</div>-->
+                    <!--</form>-->
+                    {/user.model}
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+    <ul class="menu">
         {?user.model}
-        <li><a href="{#url}site.cabinet{/url}">Кабинет</a></li>
-        {/user.model}
-        {?user.model.admin}
-        <li><a href="{#url}site.admin{/url}">Юзеры</a></li>
-        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Отчеты <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="{#url t_id=1}site.table{/url}">Уведомление о прекращении блокирования</a></li>
-            <li><a href="{#url t_id=2}site.table{/url}">Уведомление о поступлении заявки на кредитование</a></li>
-            <li><a href="{#url t_id=3}site.table{/url}">Уведомление о блокировке денежных средств по кредитной заявке</a></li>
-            <li><a href="{#url t_id=4}site.table{/url}">Подтверждение кредитной заявки на участие в аукционе</a></li>
-            <li><a href="{#url t_id=5}site.table{/url}">Уведомление о поступлении отложенной заявки на участие в аукционе</a></li>
-          </ul>
+        <li><a href="{cab_url}">Кабинет</a></li>
+        {?admin}
+        <li><a>Отчеты <b class="caret"></b></a>
+            <ul id="am">
+                <li><a href="{#url t_id=1}site.table{/url}">Уведомление о прекращении блокирования</a></li>
+                <li><a href="{#url t_id=2}site.table{/url}">Уведомление о поступлении заявки на кредитование</a></li>
+                <li><a href="{#url t_id=3}site.table{/url}">Уведомление о блокировке денежных средств по кредитной заявке</a></li>
+                <li><a href="{#url t_id=4}site.table{/url}">Подтверждение кредитной заявки на участие в аукционе</a></li>
+                <li><a href="{#url t_id=5}site.table{/url}">Уведомление о поступлении отложенной заявки на участие в аукционе</a></li>
+            </ul>
         </li>
-        {/user.model.admin}
-      </ul>
-      {?user.model}
-      <div class="navbar-right">
-      <a href="{#url}user.logout{/url}">Выход</a>
-      </div>
-      {:else}
-      <form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">
-      <div class="form-group">
-      <input name="user[email]" type="email" class="form-control" placeholder="email">
-      </div>
-      <div class="form-group">
-      <input name="user[pass]" type="password" class="form-control" placeholder="password">
-      </div>
-      <button id="logBut" type="submit" class="btn btn-default">Вход</button>
-      <button id="regBut" type="button" class="btn btn-default">Регистрация</button>
-      </form>
-      {/user.model}
-    </div><!-- /.navbar-collapse -->
-  </nav>
-  <div class="starter-template">
+        {/admin}
+        {/user.model}
+    </ul>
+
+  <div class="content" style="top:149px;width:100%;">
 {+content/}
   </div>
+</div>
+
+<div class="overlay"></div>
+{+window/}
+<div class="window _reg" style="margin-top:-150px;">
+    <div class="title">Регистрация</div>
+    <form method="post" id="reg" action="{#url}user.register{/url}" role="form">
+    <ul>
+        <li>
+            <div class="cell">Фамилия</div>
+            <div class="cell">
+                <div class="Input"><input name="user[surname]" type="text" placeholder="Ввдите фамилию"></div>
+            </div>
+        </li>
+        <li>
+            <div class="cell">Имя</div>
+            <div class="cell">
+                <div class="Input"><input name="user[name]" type="text" placeholder="Ввдите имя"></div>
+            </div>
+        </li>
+        <li>
+            <div class="cell">Отчество</div>
+            <div class="cell">
+                <div class="Input"><input name="user[patronymic]" type="text" placeholder="Ввдите отчество"></div>
+            </div>
+        </li>
+        <li>
+            <div class="cell">Телефон</div>
+            <div class="cell">
+                <div class="Input"><input name="user[tel]" type="text" placeholder="Ввдите телефон"></div>
+            </div>
+        </li>
+        <li>
+            <div class="cell">Email</div>
+            <div class="cell">
+                <div class="Input"><input name="user[email]" type="email" placeholder="Ввдите email"></div>
+            </div>
+        </li>
+        <li>
+            <div class="cell">Пароль</div>
+            <div class="cell">
+                <div class="Input"><input name="user[pass]" type="password" placeholder="Ввдите пароль"></div>
+            </div>
+        </li>
+    </ul>
+    <div class="btn">
+        <div class="Button Second" onclick="$('.window._reg,.overlay').hide();">отмена</div>
+        <div class="Button" onclick="$('#reg').submit();">ОК</div>
+    </div>
+    </form>
+</div>
+
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/js/bootstrap.min.js"></script>
@@ -81,8 +155,13 @@
     $("#regBut").click(function(){
       window.location = "/newuser";
       return false;
-    })
-    $('#tab').dataTable( {
+    });
+      $(".Input input,textarea").focus(function(){
+          $(this).parent().addClass("Focused")
+      }).blur(function(){
+                  $(this).parent().removeClass("Focused")
+              });
+      $('#tab').dataTable( {
       "sDom": 'T<"clear">lfrtip',
       "oTableTools": {
         "sSwfPath": "/../js/DataTables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"

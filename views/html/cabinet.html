@@ -2,7 +2,7 @@
 {<content}
   <h4>{user.model.surname} {user.model.name} {user.model.patronymic}</h4>
 <div id="alert_div" style="display: none" class="alert alert-success"></div>
-<h4>Компании <a href="{#url}site.company{/url}"><small id="add_company">добавить</small></a></h4>
+<h4>Компании <small style="cursor: pointer;" onclick="$('.window._com,.overlay').show();">добавить</small></h4>
 <table class="table table-condensed">
   <thead>
     <tr>
@@ -34,3 +34,32 @@
   {/companies}
 </table>
 {/content}
+{<window}
+<div class="window _com" style="margin-top:-150px;">
+    <div class="title">Добавить компанию</div>
+    <form id="com" method="post"  action="{#url}user.create_company{/url}" role="form">
+        <ul>
+            <li>
+                <div class="cell">Название</div>
+                <div class="cell">
+                    <div class="Input">
+                        <input name="company[companyname]" type="text" class="form-control" id="name" placeholder="Название" value="{company.companyname}">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cell">ИНН</div>
+                <div class="cell">
+                    <div class="Input">
+                        <input name="company[companyinn]" type="text" class="form-control" id="inn" value="{company.companyinn}" placeholder="ИНН">
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="btn">
+            <div class="Button Second" onclick="$('.window._com,.overlay').hide();">отмена</div>
+            <div class="Button" onclick="$('#com').submit();">ОК</div>
+        </div>
+        <form>
+</div>
+{/window}

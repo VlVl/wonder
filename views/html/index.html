@@ -1,10 +1,9 @@
 {>"{cd}/main.html"/}
 {<content}
-<div class="row">
-  <div class="col-md-3"></div>
-  <div class="col-md-6">
-    INDEX
-  </div>
-  <div class="col-md-3"></div>
-</div>
+
+<form id="req" method="post"  enctype="multipart/form-data" action="/upload" role="form" class="form-horizontal">
+  <input type="submit">
+  <input style="display: none" id="f" name="doc" type="file" class="multi"/>
+  <input type="button" onclick="$('#f').click()" class="multi"/>
+</form>
 {/content}
