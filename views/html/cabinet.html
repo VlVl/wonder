@@ -13,7 +13,7 @@
     <tr>
       <th>Название</th>
       <th>Инн</th>
-      <!--<th>Заявки</th>-->
+      <th>Файлы</th>
     </tr>
   </thead>
   {#companies}
@@ -40,8 +40,8 @@
       <input id="_ff{id}" rel="{id}" style="display: none" name="file" class="mult" type="file">
     </td>
     <td>
-      <a href="{#url c_id=id}site.company{/url}"><span id="edit{id}" class="glyphicon glyphicon-pencil"></span></a>
-      <a href="#"><span id="del{id}" class="glyphicon glyphicon-trash"></span></a>
+      <a href="#"><span id="cedit{id}" class="glyphicon glyphicon-pencil"></span></a>
+      <a href="{#url cid=id}user.del_company{/url}"><span class="glyphicon glyphicon-trash"></span></a>
     </td>
   </tr>
   {/companies}
@@ -71,15 +71,16 @@
           <li>
             <div class="cell">Файлы</div>
             <div class="cell">
-              <input id="_f" style="display: none" name="file" class="multi" type="file" placeholder="Файлы">
-              <a href="#" onclick="$('#_f').click();">Добавить</a>
+              <a href="#" onclick="$(this).next().find('input:last').click();">Добавить</a>
+              <input style="display: none" name="fileform" class="multi" type="file" placeholder="Файлы">
             </div>
           </li>
         </ul>
         <div class="btn">
-            <div class="Button Second" onclick="$('.window._com,.overlay').hide();">отмена</div>
+            <div class="Button Second" onclick="reset_form()">отмена</div>
             <div class="Button" onclick="$('#com').submit();">ОК</div>
         </div>
+      <input type="hidden" name="cid" id="cid" value="">
         <form>
 </div>
 <form style="display:none;" target="upload_iframe" enctype="multipart/form-data" action="/upload" method="post" id="upload-form"/></form>

@@ -143,7 +143,7 @@
        //===
        
        // MultiFile MUST have a name - default: file1[], file2[], file3[]
-       MultiFile.e.name = MultiFile.e.name  + Math.random()|| 'file'+ group_count +'[]';
+       MultiFile.e.name = MultiFile.e.name || 'file'+ group_count +'[]';
        
        //===
        

@@ -8,6 +8,7 @@
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="screen">
     <!--<link href="/css/Interface.css" rel="stylesheet" type="text/css" media="screen">-->
     <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/jquery-ui.css" rel="stylesheet">
   <link href="/js/DataTables/media/css/jquery.dataTables.css" rel="stylesheet">
   <link href="/js/DataTables/extras/TableTools/media/css/TableTools.css" rel="stylesheet">
 
@@ -19,6 +20,7 @@
   <![endif]-->
   <!--<script src="/js/jquery.min.js"></script>-->
   <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="/js/jquery-ui.js"></script>
   <script src="/js/jquery.validate.min.js"></script>
   <script src="/js/jquery.form.js"></script>
   <script type="text/javascript" src="/js/jquery.MultiFile.js"></script>
@@ -99,6 +101,8 @@
 
 <div class="overlay"></div>
 {+window/}
+{?user.model}
+{:else}
 <div class="window _reg" style="margin-top:-150px;">
     <div class="title">Регистрация</div>
     <form method="post" id="reg" action="{#url}user.register{/url}" role="form">
@@ -146,6 +150,7 @@
     </div>
     </form>
 </div>
+{/user.model}
 
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->

@@ -115,7 +115,7 @@ User.prototype.register = function ( response, request ) {
 };
 
 User.prototype.create_company = function ( response, request ) {
-  var self      = this, files = [];
+  var self      = this, files = [], cid = request.params.cid;
   for( var p in request.params){
     console.log(p);
     console.log(request.params[p]);
@@ -125,6 +125,30 @@ User.prototype.create_company = function ( response, request ) {
   var params    = request.params.company;
   params.userref = request.user.model.id;
 
+  if( cid ){
+    this.models.company.find_by_pk(cid)
+      .on("success", function(c){
+        if(files.length){
+          for (var i = 0; i < files.length; i++) {
+            var dir = files[i].path.replace(/tmp.+/,request.user.model.id);
+            if(!fs.existsSync(dir)){
+              fs.mkdirSync(dir)
+            }
+            fs.rename(files[i].path, files[i].path.replace(/tmp.+/,request.user.model.id + "/" + files[i].name));
+            new self.models.file({
+              company_id : cid,
+              name   : files[i].name
+            }).save()
+          }
+        }
+        self.models.company.update_by_pk(cid,{
+          companyname : params.companyname,
+          companyinn : params.companyinn
+      }).on("success", function(){
+          request.redirect( self.create_url('site.cabinet'));
+        })
+        })
+  }else{
   listener.stack <<= this.models.company.exists( 'companyinn=:companyinn', {
     companyinn : params.companyinn
   });
@@ -158,8 +182,22 @@ User.prototype.create_company = function ( response, request ) {
         request.redirect( self.create_url('site.error'));
       });
   });
+  }
 };
 
+User.prototype.del_company = function ( response, request ) {
+  var self = this;
+  this.models.company
+    .remove_all_by_attributes({id : request.params.cid})
+    .on("success", function(){
+      request.redirect( self.create_url('site.cabinet'));
+    })
+    .on("error", function(err){
+      request.params.error = err;
+      request.redirect( self.create_url('site.error'));
+    })
+
+}
 User.prototype.upload = function ( response, request ) {
   var params = {req_id : request.params.req_id};
   for( var p in request.params){
@@ -187,10 +225,19 @@ User.prototype.file = function ( response, request ) {
   this.models.file.find_by_pk(request.params.fid)
     .on("success", function(f){
       var file = path.join(dir,"files",request.user.model.id+"", f.name);
-      console.log(file);
       if(fs.existsSync(file))
         request.client.send_file(file);
       else console.log("not_ex")
+    })
+    .on("error", function(err){
+      request.params.error = err;
+      request.redirect( self.create_url('site.error'));
+    })
+}
+User.prototype.get_company = function ( response, request ) {
+  this.models.company.find_by_pk(request.params.id)
+    .on("success", function(c){
+        response.view_name('company').send({company : c});
     })
     .on("error", function(err){
       request.params.error = err;

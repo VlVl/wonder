@@ -25,6 +25,7 @@ module.exports = {
       'create_request'                  : 'request.create_request | post',
 
       'request'                         : 'site.request',
+      'requests'                        : 'site.requests',
       'requests/<cid:\\d+>'             : 'site.requests',
       'newcompany'                      : 'user.create_company | post',
       'company'                         : 'site.company',
@@ -32,7 +33,9 @@ module.exports = {
       'table/<t_id:\\d+>'               : 'site.table',
       'file/<fid:\\d+>'                 : 'user.file',
       'upload'                          : 'user.upload | post',
-      'set_sber'                        : 'request.set_sber | post'
+      'set_sber'                        : 'request.set_sber | post',
+      'get_company'                     : 'user.get_company | post',
+      'del_company/<cid:\\d+>'                     : 'user.del_company'
     }
   },
 
@@ -76,7 +79,7 @@ module.exports = {
       type      : 'mysql',
       user      : 'ast',
       password  : 'password',
-      database  : 'wonder',
+      database  : 'ast_utf8',
       host      : 'localhost'
     }
   }

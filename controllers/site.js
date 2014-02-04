@@ -178,21 +178,23 @@ Site.prototype.requests = function ( response, request ) {
   if(!request.user.model)
     return request.redirect( this.create_url('site.index'));
   var listener  = response.create_listener();
-//  listener.stack <<= this.models.company.With("request").find_all_by_attributes({
-  listener.stack <<= this.models.request.With('company').find_all_by_attributes({
-    company_id : request.params.cid
-  });
-  listener.success(function(data){
-    response.view_name("requests").send({
-      script : request.user.model.admin == 1 ? ["admin_cabinet"] : ["user_cabinet"],
-      requests : data,
-      cid :  request.params.cid
-    })
-  }).error(function(err){
-          response.view_name("error").send({
-              error : err
-          });
+
+  if(request.params.cid){
+    listener.stack <<= this.models.request.With('company').find_all_by_attributes({
+      company_id : request.params.cid
+    });
+    listener.success(function(data){
+      response.view_name("requests").send({
+        script : request.user.model.admin == 1 ? ["admin_cabinet"] : ["user_cabinet"],
+        requests : data,
+        cid :  request.params.cid
       })
+    }).error(function(err){
+            response.view_name("error").send({
+                error : err
+            });
+        })
+  }
 };
 Site.prototype.admin = function ( response, request ) {
   var listener  = response.create_listener();
