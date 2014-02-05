@@ -35,7 +35,9 @@ module.exports = {
       'upload'                          : 'user.upload | post',
       'set_sber'                        : 'request.set_sber | post',
       'get_company'                     : 'user.get_company | post',
-      'del_company/<cid:\\d+>'                     : 'user.del_company'
+      'del_company/<cid:\\d+>'          : 'user.del_company',
+      'about'                           : 'site.about',
+      'services'                        : 'site.services'
     }
   },
 

@@ -64,6 +64,17 @@ $(document).ready(function(){
       $('.window._req,.overlay').show();
     })
   })
+  $('#com').validate({
+    errorPlacement : function(error, element) {
+      return false;
+    }
+  });
+  $('#req').validate({
+    errorPlacement : function(error, element) {
+      return false;
+    }
+  });
+
 })
 function reset_form(){
   $('#com').reset();

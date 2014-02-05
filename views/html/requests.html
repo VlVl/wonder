@@ -49,7 +49,7 @@
                 <div class="cell">Сумма</div>
                 <div class="cell">
                     <div class="Input">
-                        <input name="request[reqamount]" type="text" id="amount" placeholder="Сумма" value="{req.reqamount}">
+                        <input class="required" name="request[reqamount]" type="text" id="amount" placeholder="Сумма" value="{req.reqamount}">
                     </div>
                 </div>
             </li>
@@ -57,20 +57,20 @@
                 <div class="cell">Срок</div>
                 <div class="cell">
                     <div class="Input">
-                        <input name="request[duedate]" type="text" id="duedate" placeholder="Срок" value="{req.duedate}">
+                        <input class="required" name="request[duedate]" type="text" id="duedate" placeholder="Срок" value="{req.duedate}">
                     </div>
                 </div>
             </li>
-            <li>
-                <div class="cell">Компания</div>
-                <div class="cell">
-                    <select id="sel" name="request[company_id]">
-                        {#companies}
-                        <option id="op{id}" value="{id}">{companyname}</option>
-                        {/companies}
-                    </select>
-                </div>
-            </li>
+            <!--<li>-->
+                <!--<div class="cell">Компания</div>-->
+                <!--<div class="cell">-->
+                    <!--<select id="sel" name="request[company_id]">-->
+                        <!--{#companies}-->
+                        <!--<option id="op{id}" value="{id}">{companyname}</option>-->
+                        <!--{/companies}-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</li>-->
         </ul>
         <input type="hidden" id="id" name="id" value="{req.id}">
         <input type="hidden" id="cid" name="cid" value="{cid}">
@@ -81,7 +81,6 @@
         <form>
         <script type="text/javascript">
           $('#duedate').datepicker({ dateFormat: "yy-mm-dd" });
-          $('#op' + $('#cid').val()).attr("selected","selected")
         </script>
 </div>
 {/window}

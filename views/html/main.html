@@ -39,30 +39,30 @@
     <div class="header">
         <div class="width980">
             <div class="cell">
-                <div class="site_name" onclick="window.lacation='/';">Vovucho</div>
+                <div class="site_name" onclick="window.location='/';">АСТ-Финанс</div>
             </div>
             <div class="cell fr">
                 <div class="authorization">
                     {?user.model}
                     <a href="/logout"><div class="Button">ВЫХОД</div></a>
                     {:else}
-                  <form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">
-                    <div class="form-group">
-                      <input name="user[email]" type="email" class="form-control" placeholder="email">
-                    </div>
-                    <div class="form-group">
-                      <input name="user[pass]" type="password" class="form-control" placeholder="password">
-                    </div>
-                    <button id="logBut" type="submit" class="btn btn-default">Вход</button>
-                    <button id="regBut" type="button" class="btn btn-default">Регистрация</button>
-                  </form>
-                    <!--<form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">-->
-                        <!--<div class="row1">-->
-                            <!--<div class="Input"><input name="user[email]" type="text" placeholder="email"></div>-->
-                            <!--<div class="Input"><input name="user[pass]" type="password" placeholder="Пароль"></div>-->
-                            <!--<div class="Button" onclick="$('#logForm').submit();">ВХОД</div>-->
-                            <!--<div class="Button" onclick="$('.window._reg,.overlay').show();">Регистрация</div>-->
-                        <!--</div>-->
+                  <!--<form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">-->
+                    <!--<div class="form-group">-->
+                      <!--<input name="user[email]" type="email" class="form-control" placeholder="email">-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                      <!--<input name="user[pass]" type="password" class="form-control" placeholder="password">-->
+                    <!--</div>-->
+                    <!--<button id="logBut" type="submit" class="btn btn-default">Вход</button>-->
+                    <!--<button id="regBut" type="button" class="btn btn-default">Регистрация</button>-->
+                  <!--</form>-->
+                    <form id="logForm"  method="post" action="{#url}user.login{/url}" class="navbar-form navbar-right" role="login">
+                        <div class="row1">
+                            <div class="Input"><input name="user[email]" type="text" placeholder="email"></div>
+                            <div class="Input"><input name="user[pass]" type="password" placeholder="Пароль"></div>
+                            <div class="Button" onclick="$('#logForm').submit();return false;">Вход</div>
+                            <div class="Button" onclick="$('.window._reg,.overlay').show();">Регистрация</div>
+                        </div>
                         <!--<div class="row2">-->
                             <!--<div class="Checkbox">-->
                                 <!--<div class="box">&times;</div>-->
@@ -70,7 +70,7 @@
                             <!--</div>-->
                             <!--<a href="" title="" class="forgot">Забыли пароль?</a>-->
                         <!--</div>-->
-                    <!--</form>-->
+                    </form>
                     {/user.model}
                 </div>
             </div>
@@ -92,6 +92,8 @@
         </li>
         {/admin}
         {/user.model}
+      <li><a href="/about">О компании</a></li>
+      <li><a href="/services">Услуги</a></li>
     </ul>
 
   <div class="content" style="top:149px;width:100%;">
@@ -103,44 +105,44 @@
 {+window/}
 {?user.model}
 {:else}
-<div class="window _reg" style="margin-top:-150px;">
+<div class="window _reg" style="margin-top:-180px;">
     <div class="title">Регистрация</div>
     <form method="post" id="reg" action="{#url}user.register{/url}" role="form">
     <ul>
         <li>
             <div class="cell">Фамилия</div>
             <div class="cell">
-                <div class="Input"><input name="user[surname]" type="text" placeholder="Ввдите фамилию"></div>
+                <div class="Input"><input class='required' name="user[surname]" type="text" placeholder="Ввдите фамилию"></div>
             </div>
         </li>
         <li>
             <div class="cell">Имя</div>
             <div class="cell">
-                <div class="Input"><input name="user[name]" type="text" placeholder="Ввдите имя"></div>
+                <div class="Input"><input class='required' name="user[name]" type="text" placeholder="Ввдите имя"></div>
             </div>
         </li>
         <li>
             <div class="cell">Отчество</div>
             <div class="cell">
-                <div class="Input"><input name="user[patronymic]" type="text" placeholder="Ввдите отчество"></div>
+                <div class="Input"><input class='required' name="user[patronymic]" type="text" placeholder="Ввдите отчество"></div>
             </div>
         </li>
         <li>
             <div class="cell">Телефон</div>
             <div class="cell">
-                <div class="Input"><input name="user[tel]" type="text" placeholder="Ввдите телефон"></div>
+                <div class="Input"><input class='required' name="user[tel]" type="text" placeholder="Ввдите телефон"></div>
             </div>
         </li>
         <li>
             <div class="cell">Email</div>
             <div class="cell">
-                <div class="Input"><input name="user[email]" type="email" placeholder="Ввдите email"></div>
+                <div class="Input"><input class="required email" name="user[email]" type="email" placeholder="Ввдите email"></div>
             </div>
         </li>
         <li>
             <div class="cell">Пароль</div>
             <div class="cell">
-                <div class="Input"><input name="user[pass]" type="password" placeholder="Ввдите пароль"></div>
+                <div class="Input"><input class='required' name="user[pass]" type="password" placeholder="Ввдите пароль"></div>
             </div>
         </li>
     </ul>
@@ -160,16 +162,21 @@
     $("#regBut").click(function(){
       $('.window._reg,.overlay').fadeIn(500)
     });
-      $(".Input input,textarea").focus(function(){
-          $(this).parent().addClass("Focused")
-      }).blur(function(){
-                  $(this).parent().removeClass("Focused")
-              });
-      $('#tab').dataTable( {
-        "sDom": 'T<"clear">lfrtip',
-        "bPaginate" : false,
-        sScrollY : $('.layout').height()-280
-      })
+    $(".Input input,textarea").focus(function(){
+        $(this).parent().addClass("Focused")
+    }).blur(function(){
+            $(this).parent().removeClass("Focused")
+      });
+    $('#tab').dataTable( {
+      "sDom": 'T<"clear">lfrtip',
+      "bPaginate" : false,
+      sScrollY : $('.layout').height()-280
+    });
+    $('#reg').validate({
+      errorPlacement : function(error, element) {
+        return false;
+      }
+    });
   })
 </script>
 </body>

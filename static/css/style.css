@@ -174,7 +174,7 @@ position:absolute;
 top:50%;
 left:50%;
 width:680px;
-max-height:380px;
+/*max-height:380px;*/
 margin-left:-350px;
 padding:10px;
 background:#fff;
@@ -208,7 +208,9 @@ text-align:right;
 display:block;
 }
 
-
+.Input input.error {
+    border: 1px dotted #f00;
+}
 
 
 ul.menu {

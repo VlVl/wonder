@@ -56,7 +56,13 @@ Site.prototype.index = function ( response, request ) {
 };
 Site.prototype.error = function ( response, request ) {
 //    response.send({user:response.user ? response.user.model : null});
-    response.view_name("error").send({error : "error " + request.params.error});
+  response.view_name("error").send({error : "error " + this.error_msg});
+};
+Site.prototype.about = function ( response, request ) {
+  response.send();
+};
+Site.prototype.services = function ( response, request ) {
+  response.send();
 };
 
 Site.prototype.edit_profile = function ( response, request ) {
@@ -112,6 +118,9 @@ Site.prototype.company = function ( response, request ) {
 }
 
 Site.prototype.table = function( response, request ){
+  if(!request.user.model || request.user.model.admin==0)
+    return request.redirect( this.create_url('site.index'));
+
   this.app.db.query(this.sql[request.params.t_id], function(e, res){
     var msgs = [
     'Уведомление о прекращении блокирования',
@@ -173,6 +182,7 @@ Site.prototype.cabinet = function ( response, request ) {
               error : err
           });
       })
+
 };
 Site.prototype.requests = function ( response, request ) {
   if(!request.user.model)
@@ -184,6 +194,11 @@ Site.prototype.requests = function ( response, request ) {
       company_id : request.params.cid
     });
     listener.success(function(data){
+      data.forEach(function(r){
+         if( typeof r.duedate == 'object')
+           r.duedate = _d(r.duedate);
+           r.date = _d(r.date);
+      })
       response.view_name("requests").send({
         script : request.user.model.admin == 1 ? ["admin_cabinet"] : ["user_cabinet"],
         requests : data,
@@ -195,6 +210,14 @@ Site.prototype.requests = function ( response, request ) {
             });
         })
   }
+  function _d(d){
+    if(/GMT/.test(d)){
+      var date = new Date(d);
+      return (date.getDate()<10 ? "0"+date.getDate() : date.getDate()) + '-' +
+        (date.getMonth()<9 ?"0"+(date.getMonth()+1) : date.getMonth()+1)  + '-'  + date.getFullYear();
+    }else return d;
+  }
+
 };
 Site.prototype.admin = function ( response, request ) {
   var listener  = response.create_listener();

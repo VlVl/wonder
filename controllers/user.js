@@ -48,7 +48,7 @@ User.prototype.login = function ( response, request ) {
 
     // иначе отправляем представление json/user.json с ошибками которые будут показаны в форме
     else{
-        request.params.error = "Wrong login or password";
+        self.app.router.get_controller('site').error_msg = "Wrong login or password";
         self.app.router.get_controller("site").error(response, request);
     }
   });
@@ -75,10 +75,10 @@ User.prototype.register = function ( response, request ) {
   var listener  = response.create_listener();
   var params    = request.params.user;
 
-  // если нет необходимых параметров, то не стоит даже пытаться регистрировать
-//  if ( !params || !params.email || !params.pass )
-//    return response.send( new Error('Bad params'), 500 );
-
+  if ( !params || !params.email || !params.pass || !params.tel || !params.surname){
+    this.app.router.get_controller('site').error_msg = "нет параметров";
+    return request.redirect( self.create_url('site.error'));
+  }
   // проверяем существует ли указанный логин
   listener.stack <<= this.models.user.exists( 'email=:email', {
     email : params.email
@@ -88,10 +88,8 @@ User.prototype.register = function ( response, request ) {
 
     // если логин уже занят - отправляем ошибку для показа в форме
     if( user_exists ) {
-        request.params.error = "This login already in use";
-
-//      request.redirect( self.create_url('site.error'));
-      return self.app.router.get_controller("site").error(response, request);
+      self.app.router.get_controller('site').error_msg = "email уже зарегистрирован";
+      return request.redirect( self.create_url('site.error'));
     }
     // если нет - создаем модель пользователя
     var user = new self.models.user( params );
@@ -108,8 +106,8 @@ User.prototype.register = function ( response, request ) {
 //        result : self.create_url('site.index')
 //      });
     }).error(function(err){
-        request.params.error = err;
-        request.redirect( self.create_url('site.error'));
+        self.app.router.get_controller('site').error_msg = err;
+        return request.redirect( self.create_url('site.error'));
       });
   });
 };
@@ -117,12 +115,14 @@ User.prototype.register = function ( response, request ) {
 User.prototype.create_company = function ( response, request ) {
   var self      = this, files = [], cid = request.params.cid;
   for( var p in request.params){
-    console.log(p);
-    console.log(request.params[p]);
     if(/^file/.test(p)) files.push(request.params[p])
   }
   var listener  = response.create_listener();
   var params    = request.params.company;
+  if(!params || !params.companyname || !params.companyinn){
+    self.app.router.get_controller('site').error_msg = "нет названия или инн";
+    return request.redirect( self.create_url('site.error'));
+  }
   params.userref = request.user.model.id;
 
   if( cid ){
@@ -156,8 +156,8 @@ User.prototype.create_company = function ( response, request ) {
   listener.success(function( com_exists ){
 
     if( com_exists ) {
-      request.params.error = "same inn";
-      request.redirect( self.create_url('site.error'));
+      self.app.router.get_controller('site').error_msg = "уже есть такой инн";
+      return request.redirect( self.create_url('site.error'));
     }
     var com = new self.models.company( params );
 
@@ -178,8 +178,8 @@ User.prototype.create_company = function ( response, request ) {
       }
       request.redirect( self.create_url('site.cabinet'));
     }).error(function(err){
-        request.params.error = err;
-        request.redirect( self.create_url('site.error'));
+        self.app.router.get_controller('site').error_msg = err;
+        return request.redirect( self.create_url('site.error'));
       });
   });
   }
