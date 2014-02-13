@@ -79,9 +79,9 @@ module.exports = {
 
     db : {
       type      : 'mysql',
-      user      : 'ast',
-      password  : 'password',
-      database  : 'ast_utf8',
+      user      : 'root',
+      password  : '',
+      database  : 'wonder',
       host      : 'localhost'
     }
   }

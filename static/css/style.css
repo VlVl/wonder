@@ -16,7 +16,7 @@ input{margin:0}
 input[type='button'],input[type='submit']{cursor:pointer}
 
   
-html{height:100%;width:100%}
+html{height:100%;width:auto}
 body{
 position:relative;
 height:100%;
@@ -25,7 +25,7 @@ min-width:1024px;
 min-height:300px;
 margin:0;
 font-family:'PT Sans Caption',sans-serif;
-font-size:11px;
+font-size:15px;
 font-weight:300;
 cursor:default;
 line-height:1.4;
@@ -155,8 +155,8 @@ position:absolute;
 left:0;
 right:0;
 bottom:0;
-padding-left: 50px;
-padding-right: 50px;
+padding-left: 30px;
+padding-right: 30px;
 overflow:hidden;
 }
 
@@ -296,6 +296,17 @@ ul.menu li:hover ul li:first-child a:hover {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
 }
+.caret {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid;
+    display: inline-block;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    width: 0;
+}
+
 .Input input{
     background-color: #FFFFFF;
     background-image: none;
@@ -305,12 +316,15 @@ ul.menu li:hover ul li:first-child a:hover {
     color: #555555;
     display: block;
     font-size: 14px;
-    height: 25px;
+    height: 15px;
     line-height: 1.42857;
     padding: 6px 12px;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
     vertical-align: middle;
-    width: 100%;
+   /*width: 100%;*/
+}
+.Input.Focused {
+    border: 1px solid #006280;
 }
 /* Buttons */
 .Button {
@@ -360,4 +374,79 @@ ul.menu li:hover ul li:first-child a:hover {
 }
 .Button.Second.Disabled {
     color:#888;
+}
+
+
+
+
+.page_title {
+    display:inline-block;
+    /* max-width:400px; */
+    padding:0 30px 0 0;
+    vertical-align:middle;
+}
+
+
+.table {
+    display:table;
+}
+.table .row {
+    display:table-row;
+}
+.table .cell {
+    display:table-cell;
+}
+
+.linebox .name {
+    color: #006280;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 17px;
+    vertical-align: middle;
+}
+
+.important_date:after {
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid #FF4C4C;
+    border-top: 4px solid transparent;
+    content: "";
+    display: block;
+    height: 0;
+    left: 0;
+    position: absolute;
+    top: 4px;
+    width: 0;
+}
+.table .important_date {
+    display: inline-block;
+    margin-right: 15px;
+    padding-left: 10px;
+    position: relative;
+}
+.table {
+    display: table;
+    margin: 5px 0 15px;
+    width: 100%;
+}
+.table .line {
+    display: table-row;
+}
+.col-c .line {
+    padding: 11px 0;
+}
+.table .cell {
+    display: table-cell;
+    vertical-align: top;
+}
+.text {
+    padding-left: 20px;
+    padding-top: 15px;
+}
+.small_text{
+    font-size: 12px;
+    color: #006280;
+    display: inline-block;
+    line-height: 17px;
+    vertical-align: middle;
+
 }

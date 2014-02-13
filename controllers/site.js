@@ -120,6 +120,7 @@ Site.prototype.company = function ( response, request ) {
 Site.prototype.table = function( response, request ){
   if(!request.user.model || request.user.model.admin==0)
     return request.redirect( this.create_url('site.index'));
+  var self = this;
 
   this.app.db.query(this.sql[request.params.t_id], function(e, res){
     var msgs = [
@@ -131,8 +132,8 @@ Site.prototype.table = function( response, request ){
     ];
     response.view_name("table").send({
       script : ["admin_cabinet"],
-      fields : res.fields,
       html: _tbody(res.fields,res.result),
+      fields : res.fields.map(function(f){ return self.alias[f.name]}),
       msg : msgs[request.params.t_id-1]
     })
   })
@@ -142,9 +143,12 @@ Site.prototype.table = function( response, request ){
       var obj = values[i];
       html += "<tr>";
       for (var j = 0; j < fields.length; j++) {
-//        var txt = (/date/.test(fields[j].name) && fields[j].name != "enddate" && fields[j].name != "reqdate")
-        var txt = (/date/.test(fields[j].name))
+//        var txt = (/date/.test(fields[j].name))
+        var txt = (fields[j].name == 'f2' || fields[j].name == 'f10')
           ? _d(obj[fields[j].name]) : obj[fields[j].name];
+        if(fields[j].name == 'f0'){
+          txt = '<a href="http://sberbank-ast.ru/tradezone/Documents/ViewDocument.aspx?id=' + obj[fields[j].name] + '">link</a>'
+        }
         html += "<td>" + txt + "</td>"
       }
       html += "</tr>"
@@ -231,167 +235,225 @@ Site.prototype.admin = function ( response, request ) {
 }
 
 
+Site.prototype.alias = {
+  f0 : "Ссылка",
+  f1 : "Код Аукциона",
+  f2 : "Дата",
+  f3 : "Номер Запроса",
+  f4 : "Контрагент",
+  f5 : "Высвобождаемая Сумма",
+  f6 : "Общая Сумма",
+  f7 : "Задолженность",
+  f8 : "Комиссия Площадки",
+  f9 : "ИНН Контрагента",
+  f10 :"todate",
+  f11 : "Адрес Контрагента",
+  f12 : "Контакт Контрагента",
+  f13 : "Телефон Контрагента",
+  f14 : "Почта Контрагента",
+  f15 : "Запрашиваемая Сумма",
+  f16 : "Сумма Блокировки",
+  f17 : "Номер Заявки",
+  f18 : "Дата Подачи Заявки",
+  f19 : "Название Фин. Организации",
+  f20 : "Крайний Срок Рассмотрения",
+  f21 : "Сумма Займа",
+  f22 : "Заблокированная Сумма",
+  f23 : "РазблокированнаяСумма",
+  f24 : "Остаток"
+}
+
 Site.prototype.sql = {
   '1' : "select" +
-  " ast_inbox_documents_utf8.id as document_id," +
-  " purchcode," +
-  " document_date," +
-  " p1.param_value as reqid," +
-  " p2.param_value as buname," +
-  " p3.param_value as amount," +
-  " p4.param_value as reqamount," +
-  " p5.param_value as debtamount," +
-  " p6.param_value as feeamount," +
-  " p7.param_value as inn," +
-  " STR_TO_DATE(REPLACE(p9.param_value,' 00:00',''),'%d.%m.%Y') as todate" +
-  " from" +
-  " ast_inbox_documents_utf8," +
-  " ast_param_utf8 p1," +
-  " ast_param_utf8 p2," +
-  " ast_param_utf8 p3," +
-  " ast_param_utf8 p4," +
-  " ast_param_utf8 p5," +
-  " ast_param_utf8 p6," +
-  " ast_param_utf8 p7," +
-  " ast_param_utf8 p8," +
-  " ast_param_utf8 p9" +
-  " where" +
-  " p1.document_id=ast_inbox_documents_utf8.id and" +
-  " p2.document_id=ast_inbox_documents_utf8.id and" +
-  " p3.document_id=ast_inbox_documents_utf8.id and" +
-  " p4.document_id=ast_inbox_documents_utf8.id and" +
-  " p5.document_id=ast_inbox_documents_utf8.id and" +
-  " p6.document_id=ast_inbox_documents_utf8.id and" +
-  " p1.param_name='reqid' and" +
-  " p2.param_name='buname' and" +
-  " p3.param_name='amount' and" +
-  " p4.param_name='reqamount' and" +
-  " p5.param_name='debtamount' and" +
-  " p6.param_name='feeamount' and" +
-  " p7.param_name='buinn' and" +
-  " p9.param_name='todate' and" +
-  " p8.param_value=p1.param_value and" +
-  " p8.document_id=p7.document_id and" +
-  " p9.document_id=p7.document_id and" +
-  " p7.document_id in (select id from ast_inbox_documents_utf8 where type='SupplierCreditRequestOrgAccept')" +
-  " order by document_date desc;",
+    " ast_inbox_documents_utf8.id as f0," +
+    " purchcode as f1," +
+    " document_date as f2," +
+    " p1.param_value as f3," +
+    " p2.param_value as f4," +
+    " p3.param_value as f5," +
+    " p4.param_value as f6," +
+    " p5.param_value as f7," +
+    " p6.param_value as f8," +
+    " p7.param_value as f9," +
+    " STR_TO_DATE(REPLACE(p9.param_value,' 00:00',''),'%d.%m.%Y') as f10" +
+    " from" +
+    " ast_inbox_documents_utf8," +
+    " ast_param_utf8 p1," +
+    " ast_param_utf8 p2," +
+    " ast_param_utf8 p3," +
+    " ast_param_utf8 p4," +
+    " ast_param_utf8 p5," +
+    " ast_param_utf8 p6," +
+    " ast_param_utf8 p7," +
+    " ast_param_utf8 p8," +
+    " ast_param_utf8 p9" +
+    " where" +
+    " p1.document_id=ast_inbox_documents_utf8.id and" +
+    " p2.document_id=ast_inbox_documents_utf8.id and" +
+    " p3.document_id=ast_inbox_documents_utf8.id and" +
+    " p4.document_id=ast_inbox_documents_utf8.id and" +
+    " p5.document_id=ast_inbox_documents_utf8.id and" +
+    " p6.document_id=ast_inbox_documents_utf8.id and" +
+    " p1.param_name='reqid' and" +
+    " p2.param_name='buname' and" +
+    " p3.param_name='amount' and" +
+    " p4.param_name='reqamount' and" +
+    " p5.param_name='debtamount' and" +
+    " p6.param_name='feeamount' and" +
+    " p7.param_name='buinn' and" +
+    " p9.param_name='todate' and" +
+    " p8.param_value=p1.param_value and" +
+    " p8.document_id=p7.document_id and" +
+    " p9.document_id=p7.document_id and" +
+    " p7.document_id in (select id from ast_inbox_documents_utf8 where type='SupplierCreditRequestOrgAccept')" +
+    " order by document_date desc;",
 
   "2" : "select"+
-  " ast_inbox_documents_utf8.id as document_id,"+
-  " document_date,"+
-  " p2.param_value as bufullname,"+
-  " p3.param_value as buinn,"+
-  " p4.param_value as buaddress,"+
-  " p5.param_value as contactperson,"+
-  " p6.param_value as contactphone,"+
-  " p7.param_value as contactemail,"+
-  " p8.param_value as loanamount"+
-  " from"+
-  " ast_inbox_documents_utf8,"+
-  " ast_param_utf8 p2,"+
-  " ast_param_utf8 p3,"+
-  " ast_param_utf8 p4,"+
-  " ast_param_utf8 p5,"+
-  " ast_param_utf8 p6,"+
-  " ast_param_utf8 p7,"+
-  " ast_param_utf8 p8"+
-  " where"+
-  " p2.document_id=ast_inbox_documents_utf8.id and"+
-  " p3.document_id=ast_inbox_documents_utf8.id and"+
-  " p4.document_id=ast_inbox_documents_utf8.id and"+
-  " p5.document_id=ast_inbox_documents_utf8.id and"+
-  " p6.document_id=ast_inbox_documents_utf8.id and"+
-  " p7.document_id=ast_inbox_documents_utf8.id and"+
-  " p8.document_id=ast_inbox_documents_utf8.id and"+
-  " p2.param_name='bufullname' and"+
-  " p3.param_name='buinn' and"+
-  " p4.param_name='buaddress' and"+
-  " p5.param_name='contactperson' and"+
-  " p6.param_name='contactphone' and"+
-  " p7.param_name='contactemail' and"+
-  " p8.param_name='loanamount' and"+
-  " type='finLoanRequest_forBank'"+
-  " order by document_date desc;",
+    " ast_inbox_documents_utf8.id as f0,"+
+    " document_date as f2,"+
+    " p2.param_value as f4,"+
+    " p3.param_value as f9,"+
+    " p4.param_value as  f11,"+
+    " p5.param_value as  f12,"+
+    " p6.param_value as  f13,"+
+    " p7.param_value as  f14,"+
+    " p8.param_value as  f15"+
+    " from"+
+    " ast_inbox_documents_utf8,"+
+    " ast_param_utf8 p2,"+
+    " ast_param_utf8 p3,"+
+    " ast_param_utf8 p4,"+
+    " ast_param_utf8 p5,"+
+    " ast_param_utf8 p6,"+
+    " ast_param_utf8 p7,"+
+    " ast_param_utf8 p8"+
+    " where"+
+    " p2.document_id=ast_inbox_documents_utf8.id and"+
+    " p3.document_id=ast_inbox_documents_utf8.id and"+
+    " p4.document_id=ast_inbox_documents_utf8.id and"+
+    " p5.document_id=ast_inbox_documents_utf8.id and"+
+    " p6.document_id=ast_inbox_documents_utf8.id and"+
+    " p7.document_id=ast_inbox_documents_utf8.id and"+
+    " p8.document_id=ast_inbox_documents_utf8.id and"+
+    " p2.param_name='bufullname' and"+
+    " p3.param_name='buinn' and"+
+    " p4.param_name='buaddress' and"+
+    " p5.param_name='contactperson' and"+
+    " p6.param_name='contactphone' and"+
+    " p7.param_name='contactemail' and"+
+    " p8.param_name='loanamount' and"+
+    " type='finLoanRequest_forBank'"+
+    " order by document_date desc;",
 
   "3": "select"+
-  " ast_inbox_documents_utf8.id as document_id,"+
-  " ast_inbox_documents_utf8.document_date,"+
-  " d2.purchcode,"+
-  " p1.param_value as reqid,"+
-  " p3.param_value as bufullname,"+
-  " p4.param_value as amount,"+
-  " p5.param_value as inn"+
-  " from"+
-  " ast_inbox_documents_utf8,"+
-  " ast_inbox_documents_utf8 d2,"+
-  " ast_param_utf8 p4,"+
-  " ast_param_utf8 p1"+
-  " left join ast_param_utf8 p2 on p2.param_name='reqid' and p2.param_value=p1.param_value"+
-  " left join ast_param_utf8 p3 on p3.param_name='bufullname' and p3.document_id=p2.document_id"+
-  " left join ast_param_utf8 p5 on p5.param_name='buinn' and p5.document_id=p3.document_id"+
-  " where"+
-  " p1.document_id=ast_inbox_documents_utf8.id and"+
-  " p4.document_id=ast_inbox_documents_utf8.id and"+
-  " p3.document_id=d2.id and"+
-  " d2.type='SupplierCreditRequestOrgAccept' and"+
-  " p1.param_name='reqid' and"+
-  " p4.param_name='amount' and"+
-  " ast_inbox_documents_utf8.type='notification_BlockCreditRequest'"+
-  " order by document_date desc;",
+    " ast_inbox_documents_utf8.id as f0,"+
+    " ast_inbox_documents_utf8.document_date as f2,"+
+    " d2.purchcode  as f1,"+
+    " p1.param_value as f3,"+
+    " p3.param_value as f4,"+
+    " p4.param_value as f16,"+
+    " p5.param_value as f9"+
+    " from"+
+    " ast_inbox_documents_utf8,"+
+    " ast_inbox_documents_utf8 d2,"+
+    " ast_param_utf8 p4,"+
+    " ast_param_utf8 p1"+
+    " left join ast_param_utf8 p2 on p2.param_name='reqid' and p2.param_value=p1.param_value"+
+    " left join ast_param_utf8 p3 on p3.param_name='bufullname' and p3.document_id=p2.document_id"+
+    " left join ast_param_utf8 p5 on p5.param_name='buinn' and p5.document_id=p3.document_id"+
+    " where"+
+    " p1.document_id=ast_inbox_documents_utf8.id and"+
+    " p4.document_id=ast_inbox_documents_utf8.id and"+
+    " p3.document_id=d2.id and"+
+    " d2.type='SupplierCreditRequestOrgAccept' and"+
+    " p1.param_name='reqid' and"+
+    " p4.param_name='amount' and"+
+    " ast_inbox_documents_utf8.type='notification_BlockCreditRequest'"+
+    " order by f2 desc;",
 
   "4" : "select"+
-  " ast_inbox_documents_utf8.id as document_id,"+
-  " document_date,"+
-  " purchcode,"+
-  " p1.param_value as reqid,"+
-  " p2.param_value as reqdate,"+
-  " p3.param_value as bufullname"+
-  " from"+
-  " ast_inbox_documents_utf8,"+
-  " ast_param_utf8 p1,"+
-  " ast_param_utf8 p2,"+
-  " ast_param_utf8 p3"+
-  " where"+
-  " p1.document_id=ast_inbox_documents_utf8.id and"+
-  " p2.document_id=ast_inbox_documents_utf8.id and"+
-  " p3.document_id=ast_inbox_documents_utf8.id and"+
-  " p1.param_name='reqid' and"+
-  " p2.param_name='reqdate' and"+
-  " p3.param_name='bufullname' and"+
-  " type='SupplierCreditRequestOrgAccept'"+
-  " order by document_date desc;",
+    " ast_inbox_documents_utf8.id as f0,"+
+    " document_date as f2,"+
+    " purchcode as f1,"+
+    " p1.param_value as f17,"+
+    " p2.param_value as f18,"+
+    " p3.param_value as f4"+
+    " from"+
+    " ast_inbox_documents_utf8,"+
+    " ast_param_utf8 p1,"+
+    " ast_param_utf8 p2,"+
+    " ast_param_utf8 p3"+
+    " where"+
+    " p1.document_id=ast_inbox_documents_utf8.id and"+
+    " p2.document_id=ast_inbox_documents_utf8.id and"+
+    " p3.document_id=ast_inbox_documents_utf8.id and"+
+    " p1.param_name='reqid' and"+
+    " p2.param_name='reqdate' and"+
+    " p3.param_name='bufullname' and"+
+    " type='SupplierCreditRequestOrgAccept'"+
+    " order by document_date desc;",
 
   "5" : "select"+
-  " ast_inbox_documents_utf8.id as document_id,"+
-  " document_date,"+
-  " p1.param_value as reqid,"+
-  " p2.param_value as finorgbuname,"+
-  " p3.param_value as enddate,"+
-  " p4.param_value as amount,"+
-  " p5.param_value as inn,"+
-  " p7.param_value as bufullname"+
-  " from"+
-  " ast_inbox_documents_utf8,"+
-  " ast_param_utf8 p1,"+
-  " ast_param_utf8 p2,"+
-  " ast_param_utf8 p3,"+
-  " ast_param_utf8 p4,"+
-  " ast_param_utf8 p5"+
-  " left join ast_param_utf8 p6 on p6.param_name='buinn' and p6.param_value=p5.param_value"+
-  " left join ast_param_utf8 p7 on p7.param_name='bufullname' and p7.document_id=p6.document_id"+
-  " where"+
-  " p1.document_id=ast_inbox_documents_utf8.id and"+
-  " p2.document_id=ast_inbox_documents_utf8.id and"+
-  " p3.document_id=ast_inbox_documents_utf8.id and"+
-  " p4.document_id=ast_inbox_documents_utf8.id and"+
-  " p5.document_id=ast_inbox_documents_utf8.id and"+
-  " p1.param_name='reqid' and"+
-  " p2.param_name='finorgbuname' and"+
-  " p3.param_name='enddate' and"+
-  " p4.param_name='amount' and"+
-  " p5.param_name='inn' and"+
-  " type='notification_PurchaseCreditRequest'"+
-  " group by document_id"+
-  " order by document_date desc;"
+    " ast_inbox_documents_utf8.id as f0,"+
+    " document_date as f2,"+
+    " p1.param_value as f17,"+
+    " p2.param_value as f19,"+
+    " p3.param_value as f20,"+
+    " p4.param_value as f21,"+
+    " p5.param_value as f9,"+
+    " p7.param_value as f4"+
+    " from"+
+    " ast_inbox_documents_utf8,"+
+    " ast_param_utf8 p1,"+
+    " ast_param_utf8 p2,"+
+    " ast_param_utf8 p3,"+
+    " ast_param_utf8 p4,"+
+    " ast_param_utf8 p5"+
+    " left join ast_param_utf8 p6 on p6.param_name='buinn' and p6.param_value=p5.param_value"+
+    " left join ast_param_utf8 p7 on p7.param_name='bufullname' and p7.document_id=p6.document_id"+
+    " where"+
+    " p1.document_id=ast_inbox_documents_utf8.id and"+
+    " p2.document_id=ast_inbox_documents_utf8.id and"+
+    " p3.document_id=ast_inbox_documents_utf8.id and"+
+    " p4.document_id=ast_inbox_documents_utf8.id and"+
+    " p5.document_id=ast_inbox_documents_utf8.id and"+
+    " p1.param_name='reqid' and"+
+    " p2.param_name='finorgbuname' and"+
+    " p3.param_name='enddate' and"+
+    " p4.param_name='amount' and"+
+    " p5.param_name='inn' and"+
+    " type='notification_PurchaseCreditRequest'"+
+    " group by f0"+
+    " order by f2 desc;",
+
+  "6" : "select"+
+    " ast_inbox_documents_utf8.id as bloc_document_id,"+
+    " IF(p2.document_id IS NULL,'NOVALUE',p2.document_id)  as unbloc_document_id,"+
+    " ast_inbox_documents_utf8.document_date as f2,"+
+    " p1.param_value as f3,"+
+    " p7.param_value as f4,"+
+    " CAST(p4.param_value AS DECIMAL(10,2)) as f22,"+
+    " (CAST(IF(p5.param_value IS NULL,0,p5.param_value) AS DECIMAL(10,2))) as f23,"+
+    " (CAST(p4.param_value AS DECIMAL(10,2)) - sum(CAST(IF(p5.param_value IS NULL,0,p5.param_value) AS DECIMAL(10,2)))) as f24"+
+    " from"+
+    "  ast_inbox_documents_utf8,"+
+    "  ast_param_utf8 p4,"+
+    "  ast_param_utf8 p1"+
+    "  right join ast_param_utf8 p6 on p6.param_name='reqid' and p6.param_value=p1.param_value"+
+    "  right join ast_param_utf8 p7 on p7.param_name='bufullname' and p7.document_id=p6.document_id"+
+
+    "  left join ast_param_utf8 p2 on p2.param_name='reqid' and p2.param_value=p1.param_value and p2.document_id in"+
+    "    (select id from ast_inbox_documents_utf8 where type='notification_ReturnCreditRequest')"+
+    "  left join ast_inbox_documents_utf8 d2 on d2.id=p2.document_id"+
+    "  left join ast_param_utf8 p5 on p5.param_name='amount' and p5.document_id=p2.document_id and p5.document_id=d2.id"+
+    " where"+
+    " p1.document_id=ast_inbox_documents_utf8.id and"+
+    " p4.document_id=ast_inbox_documents_utf8.id and"+
+    " p1.param_name='reqid' and"+
+    " p4.param_name='amount' and"+
+    " ast_inbox_documents_utf8.type='notification_BlockCreditRequest'"+
+    " group by ast_inbox_documents_utf8.id"+
+    " order by ast_inbox_documents_utf8.document_date desc;"
+
 };
 

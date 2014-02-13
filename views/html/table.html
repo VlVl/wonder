@@ -1,12 +1,12 @@
 {>"{cd}/main.html"/}
 {<content}
-<h4>{msg}</h4>
+<h1 class="page_title">{msg}</h1>
 <div id="alert_div" style="display: none" class="alert alert-success"></div>
 <table id="tab" class="table table-condensed">
 <thead>
 <tr>
   {#fields}
-<th>{name}</th>
+<th nowrap><span class="small_text">{.}</span></th>
   {/fields}
 </tr>
 </thead>

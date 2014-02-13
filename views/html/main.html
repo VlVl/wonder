@@ -7,7 +7,8 @@
   <!-- Bootstrap -->
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="screen">
     <!--<link href="/css/Interface.css" rel="stylesheet" type="text/css" media="screen">-->
-    <link href="/css/bootstrap.css" rel="stylesheet">
+    <!--<link href="/css/sep.css" rel="stylesheet">-->
+    <!--<link href="/css/bootstrap.css" rel="stylesheet">-->
     <link href="/css/jquery-ui.css" rel="stylesheet">
   <link href="/js/DataTables/media/css/jquery.dataTables.css" rel="stylesheet">
   <link href="/js/DataTables/extras/TableTools/media/css/TableTools.css" rel="stylesheet">
@@ -83,11 +84,12 @@
         {?admin}
         <li><a>Отчеты <b class="caret"></b></a>
             <ul id="am">
-                <li><a href="{#url t_id=1}site.table{/url}">Уведомление о прекращении блокирования</a></li>
-                <li><a href="{#url t_id=2}site.table{/url}">Уведомление о поступлении заявки на кредитование</a></li>
-                <li><a href="{#url t_id=3}site.table{/url}">Уведомление о блокировке денежных средств по кредитной заявке</a></li>
-                <li><a href="{#url t_id=4}site.table{/url}">Подтверждение кредитной заявки на участие в аукционе</a></li>
-                <li><a href="{#url t_id=5}site.table{/url}">Уведомление о поступлении отложенной заявки на участие в аукционе</a></li>
+              <li><a href="{#url t_id=1}site.table{/url}">Уведомление о прекращении блокирования</a></li>
+              <li><a href="{#url t_id=2}site.table{/url}">Уведомление о поступлении заявки на кредитование</a></li>
+              <li><a href="{#url t_id=3}site.table{/url}">Уведомление о блокировке денежных средств по кредитной заявке</a></li>
+              <li><a href="{#url t_id=4}site.table{/url}">Подтверждение кредитной заявки на участие в аукционе</a></li>
+              <li><a href="{#url t_id=5}site.table{/url}">Уведомление о поступлении отложенной заявки на участие в аукционе</a></li>
+              <li><a href="{#url t_id=6}site.table{/url}">Деньги заблокированные(или комиссия) на площадке</a></li>
             </ul>
         </li>
         {/admin}
@@ -96,7 +98,7 @@
       <li><a href="/services">Услуги</a></li>
     </ul>
 
-  <div class="content" style="top:149px;width:100%;">
+  <div class="content" style="top:149px;">
 {+content/}
   </div>
 </div>

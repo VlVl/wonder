@@ -36,8 +36,8 @@
         <li><a target="_blank" href="/file/{id}">{name}</a></li>
       {/files}
       </ul>
-      <a href="#" onclick="$(this).next('input').click();">Добавить</a>
-      <input id="_ff{id}" rel="{id}" style="display: none" name="file" class="mult" type="file">
+      <a href="#" onclick="$(this).next().find('input:last').click();">Добавить</a>
+      <input rel="{id}" style="display: none" name="file" class="multi" type="file">
     </td>
     <td>
       <a href="#"><span id="cedit{id}" class="glyphicon glyphicon-pencil"></span></a>
@@ -83,6 +83,5 @@
       <input type="hidden" name="cid" id="cid" value="">
         <form>
 </div>
-<form style="display:none;" target="upload_iframe" enctype="multipart/form-data" action="/upload" method="post" id="upload-form"/></form>
-<iframe id="upload_iframe" name="upload_iframe" style="width:0;height:0;border:0;"/>
+<iframe id="upload_iframe" name="upload_iframe" style="width:0;height:0;border:0;"></iframe>
 {/window}

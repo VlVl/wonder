@@ -211,12 +211,12 @@ User.prototype.upload = function ( response, request ) {
   }
   fs.rename(file.path, dir + "/" + file.name);
   this.models.file({
-    req_id : request.params.req_id,
+    company_id : request.params.req_id,
     name   : file.name
   }).save()
     .on("success",function(f){
       response.view_name("main").send({
-        result : file.name +'|' + f.insertId
+        result : file.name +'|' + f.insert_id
       })
     });
 }

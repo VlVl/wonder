@@ -14,28 +14,34 @@ $(document).ready(function(){
       })
     }
   });
-  $("input[id^=_ff]").on("onFileAppend",function(e){
-      var
+  $('.MultiFile-wrap').on("onFileAppend","input[type=file]",function(e){
+      var input = $(this),
+        ul = input.parent().siblings("ul"),
         iframe = $('#upload_iframe'),
-        form = $('#upload-form');
-        iframe.load(function(){
-        var data = $(this).contents().text();
-        if (data === undefined || data == '') return;
+        form = $('<form></form>', {
+          target : "upload_iframe",
+          enctype : "multipart/form-data",
+          action : "/upload",
+          method:"post"}).css({height:0,width:0});
 
-//        iframe.remove();
-//        form.remove();
-        data = JSON.parse(data);
-        var p = data.result.split("|");
-        $(".MultiFile-list").remove();
-        $(input).parents("ul").append("<li><a href='/file/"+p[1] + "' target='_blank'>" + p[0] + "</a></li>");
+        iframe.load(function(){
+          var data = $(this).contents().text();
+          if (data === undefined || data == '') return;
+
+  //        iframe.remove();
+          form.remove();
+          data = JSON.parse(data);
+          var p = data.result.split("|");
+//          $(".MultiFile-list").remove();
+          ul.append("<li><a href='/file/"+p[1] + "' target='_blank'>" + p[0] + "</a></li>");
       });
-      var realFile = $('input[name^=file]'),
-        newFile = realFile.clone(),
+      var newFile = input.clone(),
         usewm = 0;
-      realFile.replaceWith(newFile);
-      form.append(realFile);
-      form.append($('<input type="hidden" name="req_id"/>').val(realFile.attr('rel')));
-      form.submit();
+      input.replaceWith(newFile);
+      form.append(input);
+      form.append($('<input type="hidden" name="req_id"/>').val(input.attr('rel')));
+      form.appendTo($('body')).submit();
+      $.fn.MultiFile.reset();
      })
   $('span[id^=cedit]').click(function(){
     var id = this.id.replace(/\D/g,"");
