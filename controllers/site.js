@@ -439,7 +439,7 @@ Site.prototype.sql = {
     " order by f2 desc;",
 
   "6" : "select"+
-    " ast_inbox_documents_utf8.id as bloc_document_id,"+
+    " ast_inbox_documents_utf8.id as f0,"+
     " IF(p2.document_id IS NULL,'NOVALUE',p2.document_id)  as unbloc_document_id,"+
     " ast_inbox_documents_utf8.document_date as f2,"+
     " p1.param_value as f3,"+
