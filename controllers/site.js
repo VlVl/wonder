@@ -64,6 +64,18 @@ Site.prototype.about = function ( response, request ) {
 Site.prototype.services = function ( response, request ) {
   response.send();
 };
+Site.prototype.cooperation = function ( response, request ) {
+  response.send();
+}
+Site.prototype.contacts = function ( response, request ) {
+  response.send();
+}
+Site.prototype.list = function ( response, request ) {
+  response.send();
+}
+Site.prototype.rules = function ( response, request ) {
+  response.send();
+}
 
 Site.prototype.edit_profile = function ( response, request ) {
 

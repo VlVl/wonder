@@ -1,10 +1,12 @@
 {>"{cd}/main.html"/}
 {<content}
-  <h4>{user.model.surname} {user.model.name} {user.model.patronymic}</h4>
+<br>
+<div class="cell">
+  <h1 class="page_title">{user.model.surname} {user.model.name} {user.model.patronymic}</h1>
 <div id="alert_div" style="display: none" class="alert alert-success"></div>
-<h4>Компании
+<h2>Компании
   {?admin}
-  </h4>
+  </h2>
   {:else}
   <small style="cursor: pointer;" onclick="$('.window._com,.overlay').show();">добавить</small></h4>
   {/admin}
@@ -36,8 +38,8 @@
         <li><a target="_blank" href="/file/{id}">{name}</a></li>
       {/files}
       </ul>
-      <a href="#" onclick="$(this).next().find('input:last').click();">Добавить</a>
-      <input rel="{id}" style="display: none" name="file" class="multi" type="file">
+      <!--<a href="#" onclick="$(this).next().find('input:last').click();">Добавить</a>-->
+      <!--<input rel="{id}" style="display: none" name="file" class="multi" type="file">-->
     </td>
     <td>
       <a href="#"><span id="cedit{id}" class="glyphicon glyphicon-pencil"></span></a>
@@ -46,6 +48,7 @@
   </tr>
   {/companies}
 </table>
+  </div>
 {/content}
 {<window}
 <div class="window _com" style="margin-top:-150px;">

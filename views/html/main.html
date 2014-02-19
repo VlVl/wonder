@@ -5,11 +5,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Bootstrap -->
+  <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="screen">
     <!--<link href="/css/Interface.css" rel="stylesheet" type="text/css" media="screen">-->
     <!--<link href="/css/sep.css" rel="stylesheet">-->
-    <!--<link href="/css/bootstrap.css" rel="stylesheet">-->
-    <link href="/css/jquery-ui.css" rel="stylesheet">
+  <link href="/css/jquery-ui.css" rel="stylesheet">
+  <link href="/css/jquery.customscrollbar.css" rel="stylesheet">
   <link href="/js/DataTables/media/css/jquery.dataTables.css" rel="stylesheet">
   <link href="/js/DataTables/extras/TableTools/media/css/TableTools.css" rel="stylesheet">
 
@@ -26,6 +27,7 @@
   <script src="/js/jquery.form.js"></script>
   <script type="text/javascript" src="/js/jquery.MultiFile.js"></script>
   <script src="/js/DataTables/media/js/jquery.dataTables.js"></script>
+  <script src="/js/scrollbar/jquery.customscrollbar.js"></script>
   <!--<script src="/js/DataTables/extras/TableTools/media/js/TableTools.js"></script>-->
   <!--<script src="/js/DataTables/extras/TableTools/media/js/ZeroClipboard.js"></script>-->
   {?script}
@@ -77,7 +79,6 @@
             </div>
         </div>
     </div>
-
     <ul class="menu">
         {?user.model}
         <li><a href="{cab_url}">Кабинет</a></li>
@@ -94,11 +95,19 @@
         </li>
         {/admin}
         {/user.model}
+      <li><a href="#">Информация<b class="caret"></b></a>
+        <ul id="am">
+          <li><a href="/rules">Правила представления тендерных займов</a></li>
+          <li><a href="/list">Пакет документов по тендерным займам</a></li>
+          <li><a href="/">Типовой договор</a></li>
+        </ul>
+      </li>
+      <li><a href="/cooperation">Сотрудничество</a></li>
       <li><a href="/about">О компании</a></li>
-      <li><a href="/services">Услуги</a></li>
+      <li><a href="/contacts">Контакты</a></li>
     </ul>
 
-  <div class="content" style="top:149px;">
+  <div class="content default-skin">
 {+content/}
   </div>
 </div>
@@ -161,6 +170,7 @@
 <script src="/js/bootstrap.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
+    $('.content').height($('.layout').height()-100).customScrollbar({updateOnWindowResize: true, hScroll : false});
     $("#regBut").click(function(){
       $('.window._reg,.overlay').fadeIn(500)
     });
@@ -169,11 +179,6 @@
     }).blur(function(){
             $(this).parent().removeClass("Focused")
       });
-    $('#tab').dataTable( {
-      "sDom": 'T<"clear">lfrtip',
-      "bPaginate" : false,
-      sScrollY : $('.layout').height()-280
-    });
     $('#reg').validate({
       errorPlacement : function(error, element) {
         return false;

@@ -31,13 +31,17 @@ module.exports = {
       'company'                         : 'site.company',
       'company/<c_id:\\d+>'             : 'site.company',
       'table/<t_id:\\d+>'               : 'site.table',
+      'Rules_19_02_2014.docx'           : 'user.rules',
       'file/<fid:\\d+>'                 : 'user.file',
       'upload'                          : 'user.upload | post',
       'set_sber'                        : 'request.set_sber | post',
       'get_company'                     : 'user.get_company | post',
       'del_company/<cid:\\d+>'          : 'user.del_company',
       'about'                           : 'site.about',
-      'services'                        : 'site.services'
+      'contacts'                        : 'site.contacts',
+      'list'                            : 'site.list',
+      'rules'                            : 'site.rules',
+      'cooperation'                     : 'site.cooperation'
     }
   },
 

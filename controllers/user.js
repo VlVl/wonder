@@ -234,6 +234,13 @@ User.prototype.file = function ( response, request ) {
       request.redirect( self.create_url('site.error'));
     })
 }
+User.prototype.rules = function ( response, request ) {
+  var dir = this.app.base_dir;
+      var file = path.join(dir,"files/Rules_19_02_2014.docx");
+      if(fs.existsSync(file))
+        request.client.send_file(file);
+      else console.log("not_ex")
+}
 User.prototype.get_company = function ( response, request ) {
   this.models.company.find_by_pk(request.params.id)
     .on("success", function(c){
