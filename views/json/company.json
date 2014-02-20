@@ -1,3 +1,0 @@
-{ "companyname" : "{company.companyname|s}",
-  "companyinn" : "{company.companyinn}",
-  "id" : "{company.id}"}
