@@ -1,6 +1,7 @@
 {>"{cd}/main.html"/}
 {<content}
-<h4>{user.model.surname} {user.model.name} {user.model.patronymic}</h4>
+<div class="text_s">
+  <h1 class="page_title">{user.model.surname} {user.model.name} {user.model.patronymic}</h1>
 <div id="alert_div" style="display: none" class="alert alert-success"></div>
 <h4>Заявки
   {?admin}
@@ -39,6 +40,7 @@
   </tr>
   {/requests}
 </table>
+</div>
 {/content}
 {<window}
 <div class="window _req" style="margin-top:-150px;">

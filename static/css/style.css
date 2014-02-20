@@ -106,6 +106,7 @@ padding:0 0 0 2px;
 font-size:36px;
 line-height:36px;
 font-weight:700;
+cursor: pointer;
 }
 
 
@@ -157,7 +158,8 @@ right:0;
 bottom:0;
 padding-left: 10px;
 padding-right: 10px;
-overflow:hidden;
+overflow:auto;
+top: 120px;
 }
 
 .overlay {
