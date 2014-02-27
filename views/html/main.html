@@ -38,14 +38,16 @@
 </head>
 <body>
 <div class="layout">
-
-    <div class="header">
-        <div class="width980">
-            <div class="cell">
-                <div class="site_name" onclick="window.location='/';">АСТ-Финанс</div>
-            </div>
-            <div class="cell fr">
-                <div class="authorization">
+  <div class="header">
+    <div class="width980">
+      <div class="cell">
+        <div onclick="window.location='/';" class="site_name">
+          <span>АСТ-Финанс</span>
+          <img alt="" src="/css/images/logo.jpg" class="logo">
+        </div>
+      </div>
+      <div class="cell fr">
+        <div class="authorization">
                     {?user.model}
                     <a href="/logout"><div class="Button">ВЫХОД</div></a>
                     {:else}
