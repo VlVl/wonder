@@ -1,5 +1,7 @@
 var fs        = require('fs');
 var path      = require('path');
+var captcha = require('../lib/captcha');
+
 
 module.exports = User.inherits( require('./json') );
 
@@ -250,4 +252,17 @@ User.prototype.get_company = function ( response, request ) {
       request.params.error = err;
       request.redirect( self.create_url('site.error'));
     })
+}
+User.prototype.captcha = function ( response, request ) {
+  var c = captcha.create({width : 150,height:75});
+  this._captcha_text = c.text();
+  c.generate();
+  request.client.end(c.uri(),"binary")
+}
+
+User.prototype.compare = function ( response, request ) {
+  response.view_name('main').send({
+    result : request.params.text == this._captcha_text,
+    errors : request.params.text != this._captcha_text
+  })
 }

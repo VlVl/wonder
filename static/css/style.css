@@ -328,12 +328,12 @@ ul.menu li:hover ul li:first-child a:hover {
     color: #555555;
     display: block;
     font-size: 14px;
-    height: 25px;
+    height: 30px;
     line-height: 1.42857;
     padding: 6px 12px;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
     vertical-align: middle;
-    /*width: 100%;*/
+    width: 100%;
 }
 .Input.Focused {
     border: 1px solid #006280;

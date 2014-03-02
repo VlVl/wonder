@@ -66,7 +66,7 @@
                             <div class="Input"><input name="user[email]" type="text" placeholder="email"></div>
                             <div class="Input"><input name="user[pass]" type="password" placeholder="Пароль"></div>
                             <div class="Button" onclick="$('#logForm').submit();return false;">Вход</div>
-                            <div class="Button" onclick="$('.window._reg,.overlay').show();">Регистрация</div>
+                          <div id="regBut" class="Button">Регистрация</div>
                         </div>
                         <!--<div class="row2">-->
                             <!--<div class="Checkbox">-->
@@ -158,11 +158,18 @@
                 <div class="Input"><input class='required' name="user[pass]" type="password" placeholder="Ввдите пароль"></div>
             </div>
         </li>
+      <li>
+        <div class="cell"><img id="captcha"></div>
+        <div class="cell">
+          <a href="#" onclick="_refresh();"><span class="glyphicon glyphicon-refresh"></span></a>
+          <div class="Input"><input class='required' id="captext" type="text" placeholder="Ввдите код"></div>
+        </div>
+      </li>
     </ul>
-    <div class="btn">
+      <div class="btn">
         <div class="Button Second" onclick="$('.window._reg,.overlay').hide();">отмена</div>
-        <div class="Button" onclick="$('#reg').submit();">ОК</div>
-    </div>
+        <div class="Button" onclick="_check();">ОК</div>
+      </div>
     </form>
 </div>
 {/user.model}
@@ -173,19 +180,47 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $("#regBut").click(function(){
-      $('.window._reg,.overlay').fadeIn(500)
+      $('#reg').reset();
+      _refresh(function(){
+        $('.window._reg,.overlay').fadeIn(500);
+      });
     });
     $(".Input input,textarea").focus(function(){
-        $(this).parent().addClass("Focused")
+      $(this).parent().addClass("Focused")
     }).blur(function(){
-            $(this).parent().removeClass("Focused")
+        $(this).parent().removeClass("Focused")
       });
-    $('#reg').validate({
-      errorPlacement : function(error, element) {
-        return false;
-      }
-    });
+    $('#reg')
+      .validate({
+        errorPlacement : function(error, element) {
+          return false;
+        }
+      });
   })
+  function _refresh(cb){
+    $.post('/captcha',{}, function(data){
+      $('#captcha').attr('src',data);
+      if(cb) cb()
+    });
+  }
+  function _check(){
+    if($('#reg').valid())
+    $.post('/compare',{text : $('#captext').val()}, function(data){
+      try{
+        data = JSON.parse(data)
+      }catch (e){
+        data = {result : null, error : 'Ошибка'}
+      }
+      if(data.result){
+        $('#reg').submit()
+      }else{
+        _refresh(function(data){
+          $('#captext').val('')
+        });
+        return false
+      }
+    })
+  }
 </script>
 </body>
 </html>

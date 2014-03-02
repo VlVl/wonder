@@ -34,6 +34,8 @@ module.exports = {
       'Rules_19_02_2014.docx'           : 'user.rules',
       'file/<fid:\\d+>'                 : 'user.file',
       'upload'                          : 'user.upload | post',
+      'captcha'                          : 'user.captcha | post',
+      'compare'                          : 'user.compare | post',
       'set_sber'                        : 'request.set_sber | post',
       'get_company'                     : 'user.get_company | post',
       'del_company/<cid:\\d+>'          : 'user.del_company',
