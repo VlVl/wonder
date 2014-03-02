@@ -255,14 +255,14 @@ User.prototype.get_company = function ( response, request ) {
 }
 User.prototype.captcha = function ( response, request ) {
   var c = captcha.create({width : 150,height:75});
-  this._captcha_text = c.text();
+  request.user._captcha_text = c.text();
   c.generate();
   request.client.end(c.uri(),"binary")
 }
 
 User.prototype.compare = function ( response, request ) {
   response.view_name('main').send({
-    result : request.params.text == this._captcha_text,
-    errors : request.params.text != this._captcha_text
+    result : request.params.text == request.user._captcha_text,
+    errors : request.params.text != request.user._captcha_text
   })
 }
