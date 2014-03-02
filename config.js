@@ -66,7 +66,7 @@ module.exports = {
 
     http                : {
       // на 3000 порту
-      port            : 8080,
+      port            : 80,
       upload_dir : 'files/tmp',
 
       root_folders    : {
